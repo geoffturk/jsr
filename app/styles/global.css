@@ -1,0 +1,53 @@
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #030303;
+    color: #fcfcfc;
+  }
+  img {
+    opacity: 0.75;
+    transition: opacity 0.5s ease-in-out;
+  }
+  img:hover {
+    opacity: 1;
+  }
+  button,
+  input,
+  textarea {
+    background-color: #363636;
+    color: #fcfcfc;
+  }
+  a {
+    color: orange;
+  }
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+section {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  gap: 1rem;
+  grid-auto-flow: column;
+}
+
+div {
+  display: inline-block;
+  padding: 2rem;
+  vertical-align: top;
+}
+
+textarea {
+  vertical-align: top;
+}
+
+button {
+  margin: 0.25rem;
+  padding: 0.25rem;
+}
+.key {
+  padding-right: 0.25rem;
+}
