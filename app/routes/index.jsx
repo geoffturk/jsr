@@ -1,36 +1,22 @@
-import { Form, json } from 'remix'
+import { Form, json, useLoaderData } from 'remix'
 import Ajv from 'ajv'
-
-let schema = {
-  type: 'object',
-  properties: {
-    name: {
-      title: 'Your Name',
-      type: 'string'
-    },
-    email: {
-      title: 'Email',
-      type: 'string'
-    },
-    age: {
-      title: 'Age (in dog years)',
-      type: 'number'
-    }
-  },
-  required: ['name', 'email']
-}
+import parseRef from '~/utils/parseRef.server'
 
 export async function action({ request }) {
   let formData = await request.formData()
+  let data = Object.fromEntries(formData)
+  console.log(data)
+  let schema = await parseRef('https://ic3.dev/test_schema.json')
   let profile = {}
-  Object.keys(formData._fields)
-    .filter(name => formData._fields[name][0] !== '')
+
+  Object.keys(data)
+    .filter(name => data[name] !== '')
     .map(
       name =>
         (profile[name] =
           schema.properties[name].type === 'number'
-            ? parseInt(formData._fields[name][0])
-            : formData._fields[name][0])
+            ? parseInt(data[name])
+            : data[name])
     )
 
   let ajv = new Ajv({ allErrors: true })
@@ -42,7 +28,12 @@ export async function action({ request }) {
   return json(profile, { status: 200 })
 }
 
+export async function loader() {
+  return await parseRef('https://ic3.dev/test_schema.json')
+}
+
 export default function Index() {
+  let schema = useLoaderData()
   return (
     <div>
       <h1>JSON Schema - Remix</h1>
