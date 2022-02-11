@@ -1,24 +1,14 @@
 import { Form, json, useLoaderData } from 'remix'
 import Ajv from 'ajv'
+
 import parseRef from '~/utils/parseRef.server'
+import generateInstance from '~/utils/generateInstance.server'
 
 export async function action({ request }) {
   let formData = await request.formData()
   let data = Object.fromEntries(formData)
-  console.log(data)
   let schema = await parseRef('https://ic3.dev/test_schema.json')
-  let profile = {}
-
-  Object.keys(data)
-    .filter(name => data[name] !== '')
-    .map(
-      name =>
-        (profile[name] =
-          schema.properties[name].type === 'number'
-            ? parseInt(data[name])
-            : data[name])
-    )
-
+  let profile = generateInstance(schema, data)
   let ajv = new Ajv({ allErrors: true })
   let validate = ajv.compile(schema)
   let valid = validate(profile)

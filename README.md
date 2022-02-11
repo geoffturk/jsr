@@ -16,7 +16,38 @@ This is a prototyping repo to try out JSON Schema in Remix.
 
 ### JSON Schema Functionality Scope
 
-#### Form data generation
+```
+properties
+  title
+  description
+  type
+required
+
+Types
+-----
+string
+  minLength
+  maxLength
+  pattern
+  enum
+    enumNames
+number
+  minimum
+  maximum
+array
+  items
+    string (multiple choice)
+    enum
+      enumNames
+      contexts
+    uniqueItems (boolean)
+
+boolean
+object
+null
+```
+
+#### Form inputs generation
 
 _Given a JSON schema, generate form inputs for the properties defined in the schema._
 
