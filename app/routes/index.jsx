@@ -3,6 +3,7 @@ import Ajv from 'ajv'
 
 import parseRef from '~/utils/parseRef.server'
 import generateInstance from '~/utils/generateInstance.server'
+import FormField from '~/components/FormField'
 
 export async function action({ request }) {
   let formData = await request.formData()
@@ -29,18 +30,7 @@ export default function Index() {
       <h1>JSON Schema - Remix</h1>
       <Form method="post">
         {Object.keys(schema.properties).map(name => (
-          <span key={name}>
-            <label>
-              <span className="key">{schema.properties[name].title}:</span>
-              <input
-                type={
-                  schema.properties[name].type === 'number' ? 'number' : 'text'
-                }
-                name={name}
-              />
-            </label>
-            <br />
-          </span>
+          <FormField name={name} schema={schema} key={name} />
         ))}
         <button type="submit">Submit</button>
       </Form>
