@@ -1,12 +1,9 @@
-export default function FormField({ name, schema }) {
+export default function FormField({ name, title, type }) {
   return (
     <span>
       <label>
-        <span className="key">{schema.properties[name].title}:</span>
-        <input
-          type={schema.properties[name].type === 'number' ? 'number' : 'text'}
-          name={name}
-        />
+        <span className="key">{title}:</span>
+        <input type={type} name={name} />
       </label>
       <br />
     </span>

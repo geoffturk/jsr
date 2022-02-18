@@ -3,12 +3,14 @@ import Ajv from 'ajv'
 
 import parseRef from '~/utils/parseRef.server'
 import generateInstance from '~/utils/generateInstance.server'
-import FormField from '~/components/FormField'
+import generateForm from '~/utils/generateForm'
 
 export async function action({ request }) {
   let formData = await request.formData()
   let data = Object.fromEntries(formData)
   let schema = await parseRef('https://ic3.dev/test_schema.json')
+  // because ajv does not handle https protocol - https://github.com/ajv-validator/ajv/issues/1104
+  delete schema['$schema']
   let profile = generateInstance(schema, data)
   let ajv = new Ajv({ allErrors: true })
   let validate = ajv.compile(schema)
@@ -29,9 +31,7 @@ export default function Index() {
     <div>
       <h1>JSON Schema - Remix</h1>
       <Form method="post">
-        {Object.keys(schema.properties).map(name => (
-          <FormField name={name} schema={schema} key={name} />
-        ))}
+        {generateForm(schema)}
         <button type="submit">Submit</button>
       </Form>
     </div>
