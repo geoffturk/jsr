@@ -8,7 +8,7 @@ This is a prototyping repo to try out JSON Schema in Remix.
 
 ## To Do
 
-- [ ] Define the scope of the JSON Schema functionality to support
+- [x] Define the scope of the JSON Schema functionality to support
 - [ ] Pull in schemas from Murm Library
   - [x] Add ref parser
 - [ ] Pass profiles to Murm Index for validation (since `eval` is not an option for CF workers) instead of `ajv`
@@ -47,14 +47,14 @@ object
 null
 ```
 
-#### Form inputs generation
+#### Form inputs generation - [`generateForm.js`](app/utils/generateForm.js)
 
 _Given a JSON schema, generate form inputs for the properties defined in the schema._
 
-#### JSON instance generation
+#### JSON instance generation - [`generateInstance.server.js`](app/utils/generateInstance.server.js)
 
 _Given a JSON schema and form data, generate a JSON instance representing the data collected in the form._
 
-#### JSON instance validation
+#### JSON instance validation - `POST https://test-index.murmurations.network/v2/validate`
 
-_Given a JSON schema and a JSON instance, validated the JSON instance to that schema._
+_Given at least one JSON schema and a JSON instance, validated the JSON instance to the schema(s)._
