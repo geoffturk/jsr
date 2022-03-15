@@ -1,28 +1,36 @@
 import { Form, json, useLoaderData } from 'remix'
-import Ajv from 'ajv'
 
-import parseRef from '~/utils/parseRef.server'
-import generateInstance from '~/utils/generateInstance.server'
+import fetchPost from '~/utils/fetchPost'
 import generateForm from '~/utils/generateForm'
+import generateInstance from '~/utils/generateInstance.server'
+import parseRef from '~/utils/parseRef.server'
 
 export async function action({ request }) {
   let formData = await request.formData()
   let data = Object.fromEntries(formData)
-  let schema = await parseRef('https://ic3.dev/test_schema.json')
-  // because ajv does not handle https protocol - https://github.com/ajv-validator/ajv/issues/1104
-  delete schema['$schema']
+  let schema = await parseRef(
+    'https://test-cdn.murmurations.network/schemas/test_schema-v2.0.0.json'
+  )
   let profile = generateInstance(schema, data)
-  let ajv = new Ajv({ allErrors: true })
-  let validate = ajv.compile(schema)
-  let valid = validate(profile)
-  if (!valid) {
-    return json(validate.errors, { status: 400 })
+  profile.linked_schemas = ['test_schema-v2.0.0']
+  let validation = await fetchPost(
+    'https://test-index.murmurations.network/v2/validate',
+    profile
+  )
+  if (validation.status === 400) {
+    let body = await validation.json()
+    return json(body, { status: 400 })
+  } else if (validation.status === 200) {
+    return json(profile, { status: 200 })
+  } else {
+    console.error('Some other validation response error')
   }
-  return json(profile, { status: 200 })
 }
 
 export async function loader() {
-  return await parseRef('https://ic3.dev/test_schema.json')
+  return await parseRef(
+    'https://test-cdn.murmurations.network/schemas/test_schema-v2.0.0.json'
+  )
 }
 
 export default function Index() {
