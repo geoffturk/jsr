@@ -11,7 +11,12 @@ let schemaUrl = `https://ic3.dev/test_schema.json`
 
 export async function action({ request }) {
   let formData = await request.formData()
-  let data = Object.fromEntries(formData)
+  let data = {}
+  for (let key in formData._fields) {
+    formData._fields[key].length > 1
+      ? (data[key] = formData._fields[key])
+      : (data[key] = formData._fields[key][0])
+  }
   let schema = await parseRef(schemaUrl)
   let profile = generateInstance(schema, data)
   profile.linked_schemas = [selectedSchema]

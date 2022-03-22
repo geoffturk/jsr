@@ -15,9 +15,9 @@ export default function FormField({
           type={type}
           name={name}
           max={max}
-          maxlength={maxlength}
+          maxLength={maxlength}
           min={min}
-          minlength={minlength}
+          minLength={minlength}
         />
       </label>
       <br />

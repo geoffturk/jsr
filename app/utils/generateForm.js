@@ -44,12 +44,22 @@ export default function generateForm(schema) {
           key={name}
         />
       )
-    } else if (
-      type === 'array' ||
-      type === 'object' ||
-      type === 'boolean' ||
-      type === 'null'
-    ) {
+    } else if (type === 'array') {
+      if (schema.properties[name].items.type === 'string') {
+        let enumList = schema.properties[name].items.enum
+        let enumNamesList = schema.properties[name].items.enumNames
+        return (
+          <EnumField
+            name={name}
+            title={title}
+            enumList={enumList}
+            enumNamesList={enumNamesList}
+            key={name}
+            multi={true}
+          />
+        )
+      }
+    } else if (type === 'object' || type === 'boolean' || type === 'null') {
       return null
     } else {
       console.error('Undefined type in generateForm')

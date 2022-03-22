@@ -34,11 +34,11 @@ Types
 ✔number
   ✔minimum
   ✔maximum
-array
-  items
-    string (multiple choice)
-    enum
-      enumNames
+✔array
+  ✔items
+    ✔string (multiple choice)
+    ✔enum
+      ✔enumNames
       contexts
     uniqueItems (boolean)
 
