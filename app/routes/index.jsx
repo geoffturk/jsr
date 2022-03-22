@@ -5,22 +5,26 @@ import generateForm from '~/utils/generateForm'
 import generateInstance from '~/utils/generateInstance.server'
 import parseRef from '~/utils/parseRef.server'
 
+let selectedSchema = 'test_schema-v3.0.0'
+let schemaUrl = `https://test-cdn.murmurations.network/schemas/${selectedSchema}.json`
+
 export async function action({ request }) {
   let formData = await request.formData()
   let data = Object.fromEntries(formData)
-  let schema = await parseRef(
-    'https://test-cdn.murmurations.network/schemas/test_schema-v2.0.0.json'
-  )
+  let schema = await parseRef(schemaUrl)
   let profile = generateInstance(schema, data)
-  profile.linked_schemas = ['test_schema-v2.0.0']
+  profile.linked_schemas = [selectedSchema]
   let validation = await fetchPost(
     'https://test-index.murmurations.network/v2/validate',
     profile
   )
+  let body = await validation.json()
   if (validation.status === 400) {
-    let body = await validation.json()
     return json(body, { status: 400 })
   } else if (validation.status === 200) {
+    if (body.status === 400) {
+      return json(body.failure_reasons, { status: 400 })
+    }
     return json(profile, { status: 200 })
   } else {
     console.error('Some other validation response error')
@@ -28,9 +32,7 @@ export async function action({ request }) {
 }
 
 export async function loader() {
-  return await parseRef(
-    'https://test-cdn.murmurations.network/schemas/test_schema-v2.0.0.json'
-  )
+  return await parseRef(schemaUrl)
 }
 
 export default function Index() {
