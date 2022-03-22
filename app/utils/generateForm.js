@@ -21,7 +21,18 @@ export default function generateForm(schema) {
       }
       return <FormField name={name} type={type} title={title} key={name} />
     } else if (type === 'number') {
-      return <FormField name={name} type={type} title={title} key={name} />
+      let max = schema.properties[name].maximum
+      let min = schema.properties[name].minimum
+      return (
+        <FormField
+          name={name}
+          type={type}
+          title={title}
+          max={max}
+          min={min}
+          key={name}
+        />
+      )
     } else {
       console.error('Undefined type in generateForm')
     }
