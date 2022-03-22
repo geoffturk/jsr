@@ -5,21 +5,25 @@ export default function generateForm(schema) {
   return Object.keys(schema.properties).map(name => {
     let title = schema.properties[name].title
     let type = schema.properties[name].type
-    if (
-      type === 'object' ||
-      type === 'array' ||
-      type === 'boolean' ||
-      type === 'null'
-    ) {
-      return null
-    } else if (type === 'string') {
+    if (type === 'string') {
       if (schema.properties[name].enum) {
         let enumList = schema.properties[name].enum
         return (
           <EnumField name={name} title={title} enumList={enumList} key={name} />
         )
       }
-      return <FormField name={name} type={type} title={title} key={name} />
+      let maxLength = schema.properties[name].maxLength
+      let minLength = schema.properties[name].minLength
+      return (
+        <FormField
+          name={name}
+          type={type}
+          title={title}
+          maxlength={maxLength}
+          minlength={minLength}
+          key={name}
+        />
+      )
     } else if (type === 'number') {
       let max = schema.properties[name].maximum
       let min = schema.properties[name].minimum
@@ -33,6 +37,13 @@ export default function generateForm(schema) {
           key={name}
         />
       )
+    } else if (
+      type === 'array' ||
+      type === 'object' ||
+      type === 'boolean' ||
+      type === 'null'
+    ) {
+      return null
     } else {
       console.error('Undefined type in generateForm')
     }

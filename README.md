@@ -25,15 +25,15 @@ required
 
 Types
 -----
-string
-  minLength
-  maxLength
+✔string
+  ✔minLength
+  ✔maxLength
   pattern
-  enum
+  ✔enum
     enumNames
-number
-  minimum
-  maximum
+✔number
+  ✔minimum
+  ✔maximum
 array
   items
     string (multiple choice)
@@ -42,8 +42,8 @@ array
       contexts
     uniqueItems (boolean)
 
-boolean
 object
+boolean
 null
 ```
 

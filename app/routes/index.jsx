@@ -6,7 +6,8 @@ import generateInstance from '~/utils/generateInstance.server'
 import parseRef from '~/utils/parseRef.server'
 
 let selectedSchema = 'test_schema-v3.0.0'
-let schemaUrl = `https://test-cdn.murmurations.network/schemas/${selectedSchema}.json`
+// let schemaUrl = `https://test-cdn.murmurations.network/schemas/${selectedSchema}.json`
+let schemaUrl = `https://ic3.dev/test_schema.json`
 
 export async function action({ request }) {
   let formData = await request.formData()
