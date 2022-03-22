@@ -8,8 +8,15 @@ export default function generateForm(schema) {
     if (type === 'string') {
       if (schema.properties[name].enum) {
         let enumList = schema.properties[name].enum
+        let enumNamesList = schema.properties[name].enumNames
         return (
-          <EnumField name={name} title={title} enumList={enumList} key={name} />
+          <EnumField
+            name={name}
+            title={title}
+            enumList={enumList}
+            enumNamesList={enumNamesList}
+            key={name}
+          />
         )
       }
       let maxLength = schema.properties[name].maxLength

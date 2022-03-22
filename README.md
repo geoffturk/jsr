@@ -30,7 +30,7 @@ Types
   ✔maxLength
   pattern
   ✔enum
-    enumNames
+    ✔enumNames
 ✔number
   ✔minimum
   ✔maximum
