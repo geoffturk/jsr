@@ -28,7 +28,7 @@ Types
 ✔string
   ✔minLength
   ✔maxLength
-  pattern
+  ✔pattern
   ✔enum
     ✔enumNames
 ✔number

@@ -48,18 +48,22 @@ export default function generateForm(schema) {
       )
     } else if (type === 'array') {
       if (schema.properties[name].items.type === 'string') {
-        let enumList = schema.properties[name].items.enum
-        let enumNamesList = schema.properties[name].items.enumNames
-        return (
-          <EnumField
-            name={name}
-            title={title}
-            enumList={enumList}
-            enumNamesList={enumNamesList}
-            key={name}
-            multi={true}
-          />
-        )
+        if (schema.properties[name].items.enum) {
+          let enumList = schema.properties[name].items.enum
+          let enumNamesList = schema.properties[name].items.enumNames
+          return (
+            <EnumField
+              name={name}
+              title={title}
+              enumList={enumList}
+              enumNamesList={enumNamesList}
+              key={name}
+              multi={true}
+            />
+          )
+        } else {
+          return <FormField name={name} type={type} title={title} key={name} />
+        }
       }
     } else if (type === 'object' || type === 'boolean' || type === 'null') {
       return null

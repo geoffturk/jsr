@@ -8,6 +8,10 @@ export default function generateInstance(schema, data) {
         (profile[name] =
           schema.properties[name].type === 'number'
             ? parseInt(data[name])
+            : schema.properties[name].type === 'array' &&
+              schema.properties[name].items.type === 'string' &&
+              !schema.properties[name].items.enum
+            ? data[name].split(',')
             : data[name])
     )
 
