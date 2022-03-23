@@ -13,6 +13,7 @@ This is a prototyping repo to try out JSON Schema in Remix.
   - [x] Add ref parser
 - [x] Pass profile to Murm Index for validation (since `eval` is not an option for CF workers) instead of `ajv`
 - [ ] Build form display and formData parsing logic for defined JSON Schema functionality
+- [ ] Add error boundary
 
 ### JSON Schema Functionality Scope
 

@@ -3,6 +3,16 @@ import FormField from '~/components/FormField'
 
 export default function generateForm(schema) {
   return Object.keys(schema.properties).map(name => {
+    if (name === 'linked_schemas') {
+      return (
+        <input
+          type="hidden"
+          name="linked_schemas"
+          key="linked_schemas"
+          value={schema.metadata.schema.name}
+        />
+      )
+    }
     let title = schema.properties[name].title
     let type = schema.properties[name].type
     if (type === 'string') {
