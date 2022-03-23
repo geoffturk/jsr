@@ -4,6 +4,7 @@ export default function FormField({
   min,
   minlength,
   name,
+  pattern,
   title,
   type
 }) {
@@ -18,6 +19,7 @@ export default function FormField({
           maxLength={maxlength}
           min={min}
           minLength={minlength}
+          pattern={pattern}
         />
       </label>
       <br />

@@ -21,6 +21,7 @@ export default function generateForm(schema) {
       }
       let maxLength = schema.properties[name].maxLength
       let minLength = schema.properties[name].minLength
+      let pattern = schema.properties[name].pattern
       return (
         <FormField
           name={name}
@@ -28,6 +29,7 @@ export default function generateForm(schema) {
           title={title}
           maxlength={maxLength}
           minlength={minLength}
+          pattern={pattern}
           key={name}
         />
       )
