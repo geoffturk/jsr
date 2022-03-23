@@ -1,4 +1,4 @@
-import { Form, json, useActionData } from 'remix'
+import { Form, json, useActionData, useLoaderData } from 'remix'
 
 import fetchPost from '~/utils/fetchPost'
 import generateForm from '~/utils/generateForm'
@@ -40,7 +40,15 @@ export async function action({ request }) {
   }
 }
 
+export async function loader() {
+  let response = await fetch(
+    'https://test-library.murmurations.network/v1/schemas'
+  )
+  return await response.json()
+}
+
 export default function Index() {
+  let schemas = useLoaderData()
   let data = useActionData()
   let schema
   if (data?.$schema) {
@@ -51,8 +59,11 @@ export default function Index() {
       <h1>JSON Schema - Remix</h1>
       <Form method="post">
         <select id="schema" name="schema">
-          <option value="test_schema-v3.0.0">test_schema-v3.0.0</option>
-          <option value="test_schema-v2.0.0">test_schema-v2.0.0</option>
+          {schemas.data.map(schema => (
+            <option value={schema.name} key={schema.name}>
+              {schema.name}
+            </option>
+          ))}
         </select>
         <button type="submit" name="_action" value="select">
           Select
