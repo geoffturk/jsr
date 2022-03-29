@@ -12,7 +12,10 @@ export default function generateInstance(schema, data) {
               schema.properties[name].items.type === 'string' &&
               !schema.properties[name].items.enum
             ? data[name].split(',')
+            : name.includes('.')
+            ? console.log(data[name])
             : data[name])
     )
+  console.log(profile)
   return profile
 }
