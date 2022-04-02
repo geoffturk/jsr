@@ -1,7 +1,10 @@
-import EnumField from '~/components/EnumField'
-import FormField from '~/components/FormField'
+import React from 'react'
+
+import EnumField from '../components/EnumField'
+import FormField from '../components/FormField'
 
 export default function generateForm(schema) {
+  if (!schema.properties) return null
   return Object.keys(schema.properties).map(name => {
     if (name === 'linked_schemas') {
       return (
