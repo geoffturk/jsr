@@ -1,7 +1,10 @@
-import EnumField from '~/components/EnumField'
-import FormField from '~/components/FormField'
+import React from 'react'
 
-export default function generateForm(schema) {
+import EnumField from '../components/EnumField'
+import FormField from '../components/FormField'
+
+export default function generateForm(schema, objName) {
+  if (!schema.properties) return null
   return Object.keys(schema.properties).map(name => {
     if (name === 'linked_schemas') {
       return (
@@ -46,14 +49,16 @@ export default function generateForm(schema) {
     } else if (type === 'number') {
       let max = schema.properties[name].maximum
       let min = schema.properties[name].minimum
+      let numName = name
+      if (objName) numName = objName + '.' + name
       return (
         <FormField
-          name={name}
+          name={numName}
           type={type}
           title={title}
           max={max}
           min={min}
-          key={name}
+          key={numName}
         />
       )
     } else if (type === 'array') {
@@ -75,8 +80,10 @@ export default function generateForm(schema) {
           return <FormField name={name} type={type} title={title} key={name} />
         }
       }
-    } else if (type === 'object' || type === 'boolean' || type === 'null') {
+    } else if (type === 'boolean' || type === 'null') {
       return null
+    } else if (type === 'object') {
+      return generateForm(schema.properties[name], name)
     } else {
       console.error('Undefined type in generateForm')
     }

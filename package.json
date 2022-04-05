@@ -7,7 +7,27 @@
     "build": "remix build",
     "dev": "remix dev",
     "postinstall": "remix setup node",
-    "start": "remix-serve build"
+    "start": "remix-serve build",
+    "lint": "eslint --ignore-path .gitignore --ext .js --ext .jsx .",
+    "lint-fix": "eslint --ignore-path .gitignore --ext .js --ext .jsx . --fix",
+    "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|json)\"",
+    "format": "npm run prettier -- --write",
+    "validate": "npm run lint && npm run format && npm run build",
+    "prepare": "husky install",
+    "test": "jest"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint-config-prettier"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.+(js|jsx)": [
+      "eslint --fix"
+    ],
+    "src/**/*.+(js|jsx|json)": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
@@ -18,10 +38,18 @@
     "remix": "^1.2.1"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.2.1"
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@remix-run/dev": "^1.2.1",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^7.0.0",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.3.7",
+    "prettier": "^2.6.2"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "sideEffects": false
 }
