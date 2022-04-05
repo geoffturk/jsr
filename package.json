@@ -10,7 +10,7 @@
     "start": "remix-serve build",
     "lint": "eslint --ignore-path .gitignore --ext .js .",
     "lint-fix": "eslint --ignore-path .gitignore --ext .js . --fix",
-    "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json)\"",
+    "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|json)\"",
     "format": "npm run prettier -- --write",
     "test": "jest"
   },
