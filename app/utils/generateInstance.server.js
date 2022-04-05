@@ -11,9 +11,9 @@ export default function generateInstance(schema, data) {
               profile[name] = data[name].split(',')
           } else if (name.includes('.')) {
               let names = name.split('.')
-
               let currentObj = profile
               let currentSchema = schema
+              
               for (let i = 0; i < names.length; i++) {
                   if (i === names.length - 1) {
                       if (currentSchema.properties[names[i]]?.type === 'number') {
