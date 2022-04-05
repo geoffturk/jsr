@@ -11,16 +11,22 @@ export default function generateInstance(schema, data) {
               profile[name] = data[name].split(',')
           } else if (name.includes('.')) {
               let names = name.split('.')
+
               let currentObj = profile
+              let currentSchema = schema
               for (let i = 0; i < names.length; i++) {
                   if (i === names.length - 1) {
-                      // todo: type need to be matched, don't know how to check the type
-                      currentObj[names[i]] = parseInt(data[name])
+                      if (currentSchema.properties[names[i]]?.type === 'number') {
+                          currentObj[names[i]] = parseInt(data[name])
+                      } else {
+                          currentObj[names[i]] = data[name]
+                      }
                   } else {
                       if (currentObj[names[i]] === undefined || currentObj[names[i]] === 0) {
                           currentObj[names[i]] = {}
                       }
                       currentObj = currentObj[names[i]]
+                      currentSchema = schema.properties[names[i]]
                   }
               }
           } else {
@@ -28,6 +34,5 @@ export default function generateInstance(schema, data) {
           }
       }
     )
-  console.log(profile)
   return profile
 }

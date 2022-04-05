@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9eb5c0a3-c15c-42f7-9d51-0e96d104b896" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/generateForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/generateForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/utils/generateInstance.server.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/generateInstance.server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +44,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1649134762804</updated>
-      <workItem from="1649134766157" duration="5001000" />
+      <workItem from="1649134766157" duration="6243000" />
     </task>
     <servers />
   </component>
