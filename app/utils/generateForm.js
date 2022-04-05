@@ -1,7 +1,10 @@
-import EnumField from '~/components/EnumField'
-import FormField from '~/components/FormField'
+import React from 'react'
+
+import EnumField from '../components/EnumField'
+import FormField from '../components/FormField'
 
 export default function generateForm(schema, objName) {
+  if (!schema.properties) return null
   return Object.keys(schema.properties).map(name => {
     if (name === 'linked_schemas') {
       return (
@@ -15,7 +18,6 @@ export default function generateForm(schema, objName) {
     }
     let title = schema.properties[name].title
     let type = schema.properties[name].type
-    console.log(name, type)
     if (type === 'string') {
       if (schema.properties[name].enum) {
         let enumList = schema.properties[name].enum
@@ -81,7 +83,6 @@ export default function generateForm(schema, objName) {
     } else if (type === 'boolean' || type === 'null') {
       return null
     } else if (type === 'object') {
-      console.log(name, schema.properties[name])
       return generateForm(schema.properties[name], name)
     } else {
       console.error('Undefined type in generateForm')
