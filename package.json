@@ -8,8 +8,8 @@
     "dev": "remix dev",
     "postinstall": "remix setup node",
     "start": "remix-serve build",
-    "lint": "eslint --ignore-path .gitignore --ext .js .",
-    "lint-fix": "eslint --ignore-path .gitignore --ext .js . --fix",
+    "lint": "eslint --ignore-path .gitignore --ext .js --ext .jsx .",
+    "lint-fix": "eslint --ignore-path .gitignore --ext .js --ext .jsx . --fix",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|json)\"",
     "format": "npm run prettier -- --write",
     "test": "jest"
