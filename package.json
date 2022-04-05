@@ -12,11 +12,21 @@
     "lint-fix": "eslint --ignore-path .gitignore --ext .js --ext .jsx . --fix",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|json)\"",
     "format": "npm run prettier -- --write",
+    "validate": "npm run lint && npm run format && npm run build",
+    "prepare": "husky install",
     "test": "jest"
   },
   "eslintConfig": {
     "extends": [
       "eslint-config-prettier"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.+(js|jsx)": [
+      "eslint --fix"
+    ],
+    "src/**/*.+(js|jsx|json)": [
+      "prettier --write"
     ]
   },
   "dependencies": {
@@ -33,7 +43,9 @@
     "@babel/preset-react": "^7.16.7",
     "@remix-run/dev": "^1.2.1",
     "eslint-config-prettier": "^8.5.0",
+    "husky": "^7.0.0",
     "jest": "^27.5.1",
+    "lint-staged": "^12.3.7",
     "prettier": "^2.6.2"
   },
   "engines": {
