@@ -2,6 +2,7 @@ import React from 'react'
 
 import EnumField from '../components/EnumField'
 import FormField from '../components/FormField'
+import MultipleFormField from '../components/MultipleFormField'
 
 export default function generateForm(schema, objName) {
   if (!schema.properties) return null
@@ -79,6 +80,18 @@ export default function generateForm(schema, objName) {
         } else {
           return <FormField name={name} type={type} title={title} key={name} />
         }
+      } else if (schema.properties[name].items.type === 'object') {
+        let objects = schema.properties[name].items.required
+        let objectType = schema.properties[name].items.properties.name.type
+        return (
+          <MultipleFormField
+            name={name}
+            type={objectType}
+            title={title}
+            key={name}
+            objects={objects}
+          />
+        )
       }
     } else if (type === 'boolean' || type === 'null') {
       return null
