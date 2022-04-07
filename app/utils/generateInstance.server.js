@@ -35,6 +35,31 @@ export default function generateInstance(schema, data) {
             currentSchema = schema.properties[names[i]]
           }
         }
+      } else if (name.includes('-')) {
+        let names = name.split('-')
+        let currentObj = profile
+
+        // The format is fieldName-id-objectName
+        // The first element is fieldName[]
+        if (currentObj[names[0]] === undefined || currentObj[names[0]] === 0) {
+          currentObj[names[0]] = []
+        }
+        currentObj = currentObj[names[0]]
+
+        // The rest is as same as object
+        for (let i = 1; i < names.length; i++) {
+          if (i === names.length - 1) {
+            currentObj[names[i]] = data[name]
+          } else {
+            if (
+              currentObj[names[i]] === undefined ||
+              currentObj[names[i]] === 0
+            ) {
+              currentObj[names[i]] = {}
+            }
+            currentObj = currentObj[names[i]]
+          }
+        }
       } else {
         profile[name] = data[name]
       }
