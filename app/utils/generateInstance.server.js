@@ -12,6 +12,7 @@ export default function generateInstance(schema, data) {
         !schema.properties[name].items.enum
       ) {
         profile[name] = data[name].split(',')
+        profile[name] = profile[name].map(item => item.trim())
       } else if (name.includes('.')) {
         let names = name.split('.')
         let currentObj = profile
