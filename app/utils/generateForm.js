@@ -81,15 +81,15 @@ export default function generateForm(schema, objName) {
           return <FormField name={name} type={type} title={title} key={name} />
         }
       } else if (schema.properties[name].items.type === 'object') {
-        let objects = schema.properties[name].items.required
-        let objectType = schema.properties[name].items.properties.name.type
+        let objProperties = schema.properties[name].items.properties
+        let maxItems = schema.properties[name].maxItems
         return (
           <MultipleFormField
             name={name}
-            type={objectType}
             title={title}
             key={name}
-            objects={objects}
+            objects={objProperties}
+            maxItems={maxItems}
           />
         )
       }

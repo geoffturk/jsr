@@ -8,13 +8,13 @@ export default function MultipleFormField({
   name,
   pattern,
   title,
-  type,
+  maxItems,
   objects
 }) {
   // Initialize an empty object
   // Format is fieldName-id-objectName
   let fields = {}
-  objects.map(obj => {
+  Object.keys(objects).map(obj => {
     let objName = name + '-0-' + obj
     fields[objName] = ''
   })
@@ -30,7 +30,7 @@ export default function MultipleFormField({
 
   const handleAddInput = index => {
     let addFields = {}
-    objects.map(obj => {
+    Object.keys(objects).map(obj => {
       let objName = name + '-' + (index + 1) + '-' + obj
       addFields[objName] = ''
     })
@@ -60,12 +60,12 @@ export default function MultipleFormField({
       <span key={i}>
         <label>
           <span className="key">{title}:</span>
-          {objects.map((obj, objIndex) => {
+          {Object.keys(objects).map((obj, objIndex) => {
             let value = item[name + '-' + i + '-' + obj]
             return (
               <input
                 key={objIndex}
-                type={type}
+                type={objects[obj].type}
                 name={name + '-' + i + '-' + obj}
                 max={max}
                 maxLength={maxlength}
@@ -84,13 +84,14 @@ export default function MultipleFormField({
               onClick={() => handleRemoveInput(i)}
             />
           )}
-          {inputList.length - 1 === i && (
-            <input
-              type="button"
-              value="Add"
-              onClick={() => handleAddInput(i)}
-            />
-          )}
+          {inputList.length - 1 === i &&
+            (maxItems === undefined || inputList.length < maxItems) && (
+              <input
+                type="button"
+                value="Add"
+                onClick={() => handleAddInput(i)}
+              />
+            )}
         </label>
         <br />
       </span>
