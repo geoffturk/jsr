@@ -12,6 +12,7 @@
   }
   button,
   input,
+  select,
   textarea {
     background-color: #363636;
     color: #fcfcfc;
@@ -40,9 +41,12 @@ div {
   vertical-align: top;
 }
 
-textarea {
-  vertical-align: top;
-}
+button,
+  input,
+  select,
+  textarea {
+    margin-top: 1rem;
+  }
 
 button {
   margin: 0.25rem;
