@@ -115,8 +115,8 @@ describe('generateInstance tests', () => {
     let formData = {
       linked_schemas: 'test_schema-v1',
       name: 'The Dude',
-      'geolocation.lat': '10',
-      'geolocation.lon': '10'
+      'geolocation-lat': '10',
+      'geolocation-lon': '10'
     }
     let expected = {
       linked_schemas: ['test_schema-v1'],

@@ -21,7 +21,7 @@ export default function generateForm(schema, objName) {
     let type = schema.properties[name].type
     if (type === 'string') {
       let strName = name
-      if (objName) strName = objName + '.' + name
+      if (objName) strName = objName + '-' + name
       if (schema.properties[name].enum) {
         let enumList = schema.properties[name].enum
         let enumNamesList = schema.properties[name].enumNames
@@ -53,7 +53,7 @@ export default function generateForm(schema, objName) {
       let max = schema.properties[name].maximum
       let min = schema.properties[name].minimum
       let numName = name
-      if (objName) numName = objName + '.' + name
+      if (objName) numName = objName + '-' + name
       return (
         <FormField
           name={numName}
@@ -67,7 +67,7 @@ export default function generateForm(schema, objName) {
     } else if (type === 'array') {
       if (schema.properties[name].items.type === 'string') {
         let strName = name
-        if (objName) strName = objName + '.' + name
+        if (objName) strName = objName + '-' + name
         if (schema.properties[name].items.enum) {
           let enumList = schema.properties[name].items.enum
           let enumNamesList = schema.properties[name].items.enumNames
@@ -91,9 +91,9 @@ export default function generateForm(schema, objName) {
           schema.properties[name].items.properties,
           {}
         )
-        let strName = name
-        if (objName) strName = objName + '.' + name
         let maxItems = schema.properties[name].maxItems
+        let strName = name
+        if (objName) strName = objName + '-' + name
         return (
           <MultipleFormField
             name={strName}
@@ -108,7 +108,7 @@ export default function generateForm(schema, objName) {
       return null
     } else if (type === 'object') {
       if (objName) {
-        objName = objName + '.' + name
+        objName = objName + '-' + name
         return generateForm(schema.properties[name], objName)
       }
       return generateForm(schema.properties[name], name)
@@ -126,7 +126,7 @@ function replaceObjNames(objProperties, newObjProperties, parentName) {
 
   Object.keys(objProperties).map(name => {
     let newObjName = name
-    if (parentName) newObjName = parentName + '.' + name
+    if (parentName) newObjName = parentName + '-' + name
     if (objProperties[name].type === 'object') {
       newObjProperties = replaceObjNames(
         objProperties[name].properties,

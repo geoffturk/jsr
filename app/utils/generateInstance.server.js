@@ -13,58 +13,57 @@ export default function generateInstance(schema, data) {
       ) {
         profile[name] = data[name].split(',')
         profile[name] = profile[name].map(item => item.trim())
-      } else if (name.includes('.')) {
-        let names = name.split('.')
-        let currentObj = profile
-        let currentSchema = schema
-
-        for (let i = 0; i < names.length; i++) {
-          if (i === names.length - 1) {
-            if (currentSchema.properties[names[i]]?.type === 'number') {
-              currentObj[names[i]] = parseInt(data[name])
-            } else {
-              currentObj[names[i]] = data[name]
-            }
-          } else {
-            if (
-              currentObj[names[i]] === undefined ||
-              currentObj[names[i]] === 0
-            ) {
-              currentObj[names[i]] = {}
-            }
-            currentObj = currentObj[names[i]]
-            currentSchema = schema.properties[names[i]]
-          }
-        }
       } else if (name.includes('-')) {
-        let names = name.split('-')
-        let currentObj = profile
-
-        // The format is fieldName-id-objectName
-        // The first element is fieldName[]
-        if (currentObj[names[0]] === undefined || currentObj[names[0]] === 0) {
-          currentObj[names[0]] = []
-        }
-        currentObj = currentObj[names[0]]
-
-        // The rest is as same as object
-        for (let i = 1; i < names.length; i++) {
-          if (i === names.length - 1) {
-            currentObj[names[i]] = data[name]
-          } else {
-            if (
-              currentObj[names[i]] === undefined ||
-              currentObj[names[i]] === 0
-            ) {
-              currentObj[names[i]] = {}
-            }
-            currentObj = currentObj[names[i]]
-          }
-        }
+        profile = parseArrayObject(name, data[name], schema, profile)
       } else {
         profile[name] = data[name]
       }
     })
-  console.log(profile)
+  return profile
+}
+
+function parseArrayObject(fieldName, fieldData, schema, profile) {
+  if (!fieldName.includes('-')) {
+    profile[fieldName] = fieldData
+  } else {
+    let arrayFields = fieldName.split('-')
+    let currentProfile = profile
+    let currentSchema = schema
+
+    for (let i = 0; i < arrayFields.length; i++) {
+      // last item of array comes with value
+      if (i === arrayFields.length - 1) {
+        if (currentSchema.properties[arrayFields[i]]?.type === 'number') {
+          currentProfile[arrayFields[i]] = parseInt(fieldData)
+        } else {
+          currentProfile[arrayFields[i]] = fieldData
+        }
+      } else {
+        // check is number or not
+        if (!isNaN(arrayFields[i + 1])) {
+          if (
+            currentProfile[arrayFields[i]] === undefined ||
+            currentProfile[arrayFields[i]] === 0
+          ) {
+            currentProfile[arrayFields[i]] = []
+          }
+        }
+
+        if (
+          currentProfile[arrayFields[i]] === undefined ||
+          currentProfile[arrayFields[i]] === 0
+        ) {
+          currentProfile[arrayFields[i]] = {}
+        }
+        currentProfile = currentProfile[arrayFields[i]]
+
+        if (!isNaN(arrayFields[i])) {
+          currentSchema = currentSchema.items
+        } else {
+          currentSchema = currentSchema.properties[arrayFields[i]]
+        }
+      }
+    }
+  }
   return profile
 }
