@@ -65,5 +65,6 @@ export default function generateInstance(schema, data) {
         profile[name] = data[name]
       }
     })
+  console.log(profile)
   return profile
 }
