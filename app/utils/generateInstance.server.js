@@ -33,20 +33,25 @@ function parseArrayObject(fieldName, fieldData, schema, profile) {
     for (let i = 0; i < arrayFields.length; i++) {
       // last item of array comes with value
       if (i === arrayFields.length - 1) {
-        if (currentSchema.properties[arrayFields[i]]?.type === 'number') {
+        if (currentSchema.properties[arrayFields[i]]?.type === 'array') {
+          let newArray = []
+          newArray.push(fieldData)
+          currentProfile[arrayFields[i]] = newArray
+        } else if (
+          currentSchema.properties[arrayFields[i]]?.type === 'number'
+        ) {
           currentProfile[arrayFields[i]] = parseInt(fieldData)
         } else {
           currentProfile[arrayFields[i]] = fieldData
         }
       } else {
         // check is number or not
-        if (!isNaN(arrayFields[i + 1])) {
-          if (
-            currentProfile[arrayFields[i]] === undefined ||
-            currentProfile[arrayFields[i]] === 0
-          ) {
-            currentProfile[arrayFields[i]] = []
-          }
+        if (
+          !isNaN(arrayFields[i + 1]) &&
+          (currentProfile[arrayFields[i]] === undefined ||
+            currentProfile[arrayFields[i]] === 0)
+        ) {
+          currentProfile[arrayFields[i]] = []
         }
 
         if (
