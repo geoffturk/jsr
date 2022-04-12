@@ -22,53 +22,59 @@ export default function generateInstance(schema, data) {
   return profile
 }
 
+/*
+// When the field name has "-" symbol, it has objects or arrays.
+//
+// For example,
+// oaosn-some_arr-0-some_string
+// We split into ['oaosn', 'some_arr', '0', 'some_string']
+// There are two ways to determining the field is array type.
+// (1) field name is number(multiple arrays)
+// (2) schema type is array
+//
+// For other situations, the content will be parsed as an object.
+*/
 function parseArrayObject(fieldName, fieldData, schema, profile) {
-  if (!fieldName.includes('-')) {
-    profile[fieldName] = fieldData
-  } else {
-    let arrayFields = fieldName.split('-')
-    let currentProfile = profile
-    let currentSchema = schema
+  let arrayFields = fieldName.split('-')
+  let currentProfile = profile
+  let currentSchema = schema
 
-    for (let i = 0; i < arrayFields.length; i++) {
-      // last item of array comes with value
-      if (i === arrayFields.length - 1) {
-        if (currentSchema.properties[arrayFields[i]]?.type === 'array') {
-          let newArray = []
-          newArray.push(fieldData)
-          currentProfile[arrayFields[i]] = newArray
-        } else if (
-          currentSchema.properties[arrayFields[i]]?.type === 'number'
-        ) {
-          currentProfile[arrayFields[i]] = parseInt(fieldData)
-        } else {
-          currentProfile[arrayFields[i]] = fieldData
-        }
+  for (let i = 0; i < arrayFields.length; i++) {
+    // The last item comes with value
+    if (i === arrayFields.length - 1) {
+      if (currentSchema.properties[arrayFields[i]]?.type === 'array') {
+        let newArray = []
+        newArray.push(fieldData)
+        currentProfile[arrayFields[i]] = newArray
+      } else if (currentSchema.properties[arrayFields[i]]?.type === 'number') {
+        currentProfile[arrayFields[i]] = parseInt(fieldData)
       } else {
-        // check is number or not
-        if (
-          !isNaN(arrayFields[i + 1]) &&
-          (currentProfile[arrayFields[i]] === undefined ||
-            currentProfile[arrayFields[i]] === 0)
-        ) {
+        currentProfile[arrayFields[i]] = fieldData
+      }
+    } else {
+      // If the next item is number, we need add it as an array.
+      if (
+        currentProfile[arrayFields[i]] === undefined ||
+        currentProfile[arrayFields[i]] === 0
+      ) {
+        if (!isNaN(arrayFields[i + 1])) {
           currentProfile[arrayFields[i]] = []
-        }
-
-        if (
-          currentProfile[arrayFields[i]] === undefined ||
-          currentProfile[arrayFields[i]] === 0
-        ) {
+        } else {
           currentProfile[arrayFields[i]] = {}
         }
-        currentProfile = currentProfile[arrayFields[i]]
+      }
 
-        if (!isNaN(arrayFields[i])) {
-          currentSchema = currentSchema.items
-        } else {
-          currentSchema = currentSchema.properties[arrayFields[i]]
-        }
+      // Add field and get into the next level
+      currentProfile = currentProfile[arrayFields[i]]
+
+      // If it's an array, we need to retrieve the next level data by "items"
+      if (!isNaN(arrayFields[i])) {
+        currentSchema = currentSchema.items
+      } else {
+        currentSchema = currentSchema.properties[arrayFields[i]]
       }
     }
   }
+
   return profile
 }
