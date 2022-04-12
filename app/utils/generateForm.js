@@ -120,7 +120,8 @@ export default function generateForm(schema, objName) {
 
 /*
 // This function is only used for MultipleFormField
-// It replaces all objects with parent name.
+// It replaces all objects with their parent name.
+// 
 // For example:
 // obj_a: { obj_b : {xxx}} will be replaced with the following format
 // obj_a: { obj_a-obj_b : {xxx}}
