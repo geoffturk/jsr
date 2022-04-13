@@ -62,19 +62,23 @@ export default function MultipleFormField({
           <span className="key">{title}:</span>
           {Object.keys(objects).map((obj, objIndex) => {
             let value = item[name + '-' + i + '-' + obj]
+            let labelName = obj.split('-').pop()
             return (
-              <input
-                key={objIndex}
-                type={objects[obj].type}
-                name={name + '-' + i + '-' + obj}
-                max={max}
-                maxLength={maxlength}
-                min={min}
-                minLength={minlength}
-                pattern={pattern}
-                value={value}
-                onChange={e => handleChange(e, i)}
-              />
+              <label key={objIndex}>
+                {labelName}:
+                <input
+                  key={objIndex}
+                  type={objects[obj].type}
+                  name={name + '-' + i + '-' + obj}
+                  max={max}
+                  maxLength={maxlength}
+                  min={min}
+                  minLength={minlength}
+                  pattern={pattern}
+                  value={value}
+                  onChange={e => handleChange(e, i)}
+                />
+              </label>
             )
           })}
           {inputList.length !== 1 && (
