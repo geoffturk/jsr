@@ -3,13 +3,16 @@
     background-color: #030303;
     color: #fcfcfc;
   }
+
   img {
     opacity: 0.75;
     transition: opacity 0.5s ease-in-out;
   }
+
   img:hover {
     opacity: 1;
   }
+
   button,
   input,
   select,
@@ -17,6 +20,7 @@
     background-color: #363636;
     color: #fcfcfc;
   }
+
   a {
     color: orange;
   }
@@ -42,16 +46,18 @@ div {
 }
 
 button,
-  input,
-  select,
-  textarea {
-    margin-top: 1rem;
-  }
+hr,
+input,
+select,
+textarea {
+  margin-bottom: 1rem;
+}
 
 button {
   margin: 0.25rem;
   padding: 0.25rem;
 }
+
 .key {
   padding-right: 0.25rem;
 }
