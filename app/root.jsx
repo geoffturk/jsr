@@ -7,7 +7,7 @@ import {
   ScrollRestoration
 } from 'remix'
 
-import globalStylesUrl from './styles/global.css'
+import globalStylesUrl from '~/styles/global.css'
 
 export const links = () => {
   return [
