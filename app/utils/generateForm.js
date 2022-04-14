@@ -65,27 +65,42 @@ export default function generateForm(schema, objName) {
         />
       )
     } else if (type === 'array') {
-      // if there is an object inside the array, we need to replace the object names with their parent names.
-      let objProperties = schema.properties[name].items
-      if (schema.properties[name].items?.type === 'object') {
-        objProperties = replaceObjNames(
-          schema.properties[name].items.properties,
-          {}
-        )
-      }
-      let maxItems = schema.properties[name].maxItems
       let strName = name
       if (objName) strName = objName + '-' + name
+      if (schema.properties[name].items.enum) {
+        let enumList = schema.properties[name].items.enum
+        let enumNamesList = schema.properties[name].items.enumNames
+        return (
+          <EnumField
+            name={strName}
+            title={title}
+            enumList={enumList}
+            enumNamesList={enumNamesList}
+            key={strName}
+            multi={true}
+          />
+        )
+      } else {
+        // if there is an object inside the array, we need to replace the object names with their parent names.
+        let objProperties = schema.properties[name].items
+        if (schema.properties[name].items?.type === 'object') {
+          objProperties = replaceObjNames(
+            schema.properties[name].items.properties,
+            {}
+          )
+        }
+        let maxItems = schema.properties[name].maxItems
 
-      return (
-        <MultipleFormField
-          name={strName}
-          title={title}
-          key={strName}
-          objects={objProperties}
-          maxItems={maxItems}
-        />
-      )
+        return (
+          <MultipleFormField
+            name={strName}
+            title={title}
+            key={strName}
+            objects={objProperties}
+            maxItems={maxItems}
+          />
+        )
+      }
     } else if (type === 'boolean' || type === 'null') {
       return null
     } else if (type === 'object') {

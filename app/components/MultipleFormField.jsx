@@ -67,9 +67,16 @@ export default function MultipleFormField({
             if (objType === 'array') {
               objType = objects[obj].items.type
             }
-            if (objects[obj].enum) {
-              let enumList = objects[obj].enum
+            if (objects[obj].enum || objects[obj].items?.enum) {
               let multi = false
+              let enumList = objects[obj].enum
+              let enumNamesList = objects[obj].enumNames
+              if (objects[obj]?.items?.enum) {
+                enumList = objects[obj].items.enum
+                enumNamesList = objects[obj].items.enumNames
+                multi = true
+              }
+
               return (
                 <label key={objIndex}>
                   {labelName}:
@@ -85,7 +92,7 @@ export default function MultipleFormField({
                     )}
                     {enumList.map((enumV, enumI) => (
                       <option value={enumV} key={enumV}>
-                        {enumList[enumI]}
+                        {enumNamesList ? enumNamesList[enumI] : enumV}
                       </option>
                     ))}
                   </select>

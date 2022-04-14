@@ -42,7 +42,10 @@ function parseArrayObject(fieldName, fieldData, schema, profile) {
   for (let i = 0; i < arrayFields.length; i++) {
     // The last item comes with value
     if (i === arrayFields.length - 1) {
-      if (currentSchema.properties[arrayFields[i]]?.type === 'array') {
+      if (
+        currentSchema.properties[arrayFields[i]]?.type === 'array' &&
+        currentSchema.properties[arrayFields[i]].items.enum === undefined
+      ) {
         let newArray = []
         newArray.push(fieldData)
         currentProfile[arrayFields[i]] = newArray
