@@ -63,23 +63,53 @@ export default function MultipleFormField({
           {Object.keys(objects).map((obj, objIndex) => {
             let value = item[name + '-' + i + '-' + obj]
             let labelName = obj.split('-').pop()
-            return (
-              <label key={objIndex}>
-                {labelName}:
-                <input
-                  key={objIndex}
-                  type={objects[obj].type}
-                  name={name + '-' + i + '-' + obj}
-                  max={max}
-                  maxLength={maxlength}
-                  min={min}
-                  minLength={minlength}
-                  pattern={pattern}
-                  value={value}
-                  onChange={e => handleChange(e, i)}
-                />
-              </label>
-            )
+            let objType = objects[obj].type
+            if (objType === 'array') {
+              objType = objects[obj].items.type
+            }
+            if (objects[obj].enum) {
+              let enumList = objects[obj].enum
+              let multi = false
+              return (
+                <label key={objIndex}>
+                  {labelName}:
+                  <select
+                    name={name + '-' + i + '-' + obj}
+                    id={name + '-' + i + '-' + obj}
+                    multiple={multi}
+                  >
+                    {multi ? null : (
+                      <option value="" key="0">
+                        Select
+                      </option>
+                    )}
+                    {enumList.map((enumV, enumI) => (
+                      <option value={enumV} key={enumV}>
+                        {enumList[enumI]}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )
+            } else {
+              return (
+                <label key={objIndex}>
+                  {labelName}:
+                  <input
+                    key={objIndex}
+                    type={objType}
+                    name={name + '-' + i + '-' + obj}
+                    max={max}
+                    maxLength={maxlength}
+                    min={min}
+                    minLength={minlength}
+                    pattern={pattern}
+                    value={value}
+                    onChange={e => handleChange(e, i)}
+                  />
+                </label>
+              )
+            }
           })}
           {inputList.length !== 1 && (
             <input

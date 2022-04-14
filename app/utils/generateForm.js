@@ -65,45 +65,27 @@ export default function generateForm(schema, objName) {
         />
       )
     } else if (type === 'array') {
-      if (schema.properties[name].items.type === 'string') {
-        let strName = name
-        if (objName) strName = objName + '-' + name
-        if (schema.properties[name].items.enum) {
-          let enumList = schema.properties[name].items.enum
-          let enumNamesList = schema.properties[name].items.enumNames
-          return (
-            <EnumField
-              name={strName}
-              title={title}
-              enumList={enumList}
-              enumNamesList={enumNamesList}
-              key={strName}
-              multi={true}
-            />
-          )
-        } else {
-          return (
-            <FormField name={strName} type={type} title={title} key={strName} />
-          )
-        }
-      } else if (schema.properties[name].items.type === 'object') {
-        let objProperties = replaceObjNames(
+      // if there is an object inside the array, we need to replace the object names with their parent names.
+      let objProperties = schema.properties[name].items
+      if (schema.properties[name].items?.type === 'object') {
+        objProperties = replaceObjNames(
           schema.properties[name].items.properties,
           {}
         )
-        let maxItems = schema.properties[name].maxItems
-        let strName = name
-        if (objName) strName = objName + '-' + name
-        return (
-          <MultipleFormField
-            name={strName}
-            title={title}
-            key={strName}
-            objects={objProperties}
-            maxItems={maxItems}
-          />
-        )
       }
+      let maxItems = schema.properties[name].maxItems
+      let strName = name
+      if (objName) strName = objName + '-' + name
+
+      return (
+        <MultipleFormField
+          name={strName}
+          title={title}
+          key={strName}
+          objects={objProperties}
+          maxItems={maxItems}
+        />
+      )
     } else if (type === 'boolean' || type === 'null') {
       return null
     } else if (type === 'object') {
@@ -121,7 +103,7 @@ export default function generateForm(schema, objName) {
 /*
 // This function is only used for MultipleFormField
 // It replaces all objects with their parent name.
-// 
+//
 // For example:
 // obj_a: { obj_b : {xxx}} will be replaced with the following format
 // obj_a: { obj_a-obj_b : {xxx}}
