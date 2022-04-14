@@ -3,6 +3,7 @@ import React from 'react'
 import EnumField from '../components/EnumField'
 import FormField from '../components/FormField'
 import MultipleFormField from '../components/MultipleFormField'
+import MultipleArrayField from '../components/MultipleArrayField'
 
 export default function generateForm(schema, objName) {
   if (!schema.properties) return null
@@ -67,6 +68,7 @@ export default function generateForm(schema, objName) {
     } else if (type === 'array') {
       let strName = name
       if (objName) strName = objName + '-' + name
+
       if (schema.properties[name].items.enum) {
         let enumList = schema.properties[name].items.enum
         let enumNamesList = schema.properties[name].items.enumNames
@@ -83,23 +85,33 @@ export default function generateForm(schema, objName) {
       } else {
         // if there is an object inside the array, we need to replace the object names with their parent names.
         let objProperties = schema.properties[name].items
+        let maxItems = schema.properties[name].maxItems
         if (schema.properties[name].items?.type === 'object') {
           objProperties = replaceObjNames(
             schema.properties[name].items.properties,
             {}
           )
-        }
-        let maxItems = schema.properties[name].maxItems
 
-        return (
-          <MultipleFormField
-            name={strName}
-            title={title}
-            key={strName}
-            objects={objProperties}
-            maxItems={maxItems}
-          />
-        )
+          return (
+            <MultipleFormField
+              name={strName}
+              title={title}
+              key={strName}
+              objects={objProperties}
+              maxItems={maxItems}
+            />
+          )
+        } else {
+          return (
+            <MultipleArrayField
+              name={strName}
+              title={title}
+              key={strName}
+              objects={objProperties}
+              maxItems={maxItems}
+            />
+          )
+        }
       }
     } else if (type === 'boolean' || type === 'null') {
       return null
