@@ -1,4 +1,5 @@
 import { Form, json, useActionData, useLoaderData } from 'remix'
+import { useEffect, useState } from 'react'
 
 import fetchPost from '~/utils/fetchPost'
 import generateForm from '~/utils/generateForm'
@@ -27,7 +28,7 @@ export async function action({ request }) {
       return json(body, { status: 400 })
     } else if (validation.status === 200) {
       if (body.status === 400) {
-        return json(body.failure_reasons, { status: 400 })
+        return json(body, { status: 400 })
       }
       return json(profile, { status: 200 })
     } else {
@@ -50,10 +51,23 @@ export async function loader() {
 export default function Index() {
   let schemas = useLoaderData()
   let data = useActionData()
-  let schema
-  if (data?.$schema) {
-    schema = data
-  }
+  let [schema, setSchema] = useState('')
+  let [instance, setInstance] = useState('')
+  let [errors, setErrors] = useState([])
+  useEffect(() => {
+    if (data?.$schema) {
+      setSchema(data)
+      setInstance('')
+      setErrors([])
+    }
+    if (data?.linked_schemas) {
+      setInstance(data)
+      setErrors([])
+    }
+    if (data?.failure_reasons) {
+      setErrors(data.failure_reasons)
+    }
+  }, [data])
   return (
     <div>
       <h1>JSON Schema - Remix</h1>
@@ -80,6 +94,14 @@ export default function Index() {
       ) : (
         'Select a schema...'
       )}
+      {instance ? <pre>{JSON.stringify(instance, null, 2)}</pre> : null}
+      {errors
+        ? errors.map(error => (
+            <p className="error" key={error}>
+              {error}
+            </p>
+          ))
+        : null}
     </div>
   )
 }

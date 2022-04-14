@@ -61,3 +61,7 @@ button {
 .key {
   padding-right: 0.25rem;
 }
+
+.error {
+  color: red;
+}
