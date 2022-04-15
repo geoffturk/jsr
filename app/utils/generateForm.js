@@ -84,7 +84,10 @@ export default function generateForm(schema, objName) {
         )
       } else {
         // if there is an object inside the array, we need to replace the object names with their parent names.
-        let objProperties = schema.properties[name].items
+        let objProperties = {
+          type: schema.properties[name].items.type
+        }
+        console.log(objProperties)
         let maxItems = schema.properties[name].maxItems
         if (schema.properties[name].items?.type === 'object') {
           objProperties = replaceObjNames(
