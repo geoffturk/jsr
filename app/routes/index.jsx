@@ -69,8 +69,7 @@ export default function Index() {
     }
   }, [data])
   return (
-    <div>
-      <h1>JSON Schema - Remix</h1>
+    <>
       <Form method="post">
         <select id="schema" name="schema">
           {schemas.data.map(schema => (
@@ -104,6 +103,14 @@ export default function Index() {
             </p>
           ))
         : null}
+    </>
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <div className="kaboom">
+      <h1>💥🤬</h1>
     </div>
   )
 }

@@ -32,6 +32,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <h1>JSON Schema - Remix</h1>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
@@ -51,7 +52,7 @@ export function ErrorBoundary({ error }) {
         <Links />
       </head>
       <body className="kaboom">
-        <h1>💥🤬</h1>
+        <h1>💥😱</h1>
         <Scripts />
       </body>
     </html>
