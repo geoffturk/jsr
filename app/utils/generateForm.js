@@ -19,6 +19,7 @@ export default function generateForm(schema, objName) {
       )
     }
     let title = schema.properties[name].title
+    let description = schema.properties[name].description
     let type = schema.properties[name].type
     if (type === 'string') {
       let strName = name
@@ -28,6 +29,7 @@ export default function generateForm(schema, objName) {
         let enumNamesList = schema.properties[name].enumNames
         return (
           <EnumField
+            description={description}
             name={strName}
             title={title}
             enumList={enumList}
@@ -42,6 +44,7 @@ export default function generateForm(schema, objName) {
       return (
         <FormField
           name={strName}
+          description={description}
           type={type}
           title={title}
           maxlength={maxLength}
@@ -58,6 +61,7 @@ export default function generateForm(schema, objName) {
       return (
         <FormField
           name={numName}
+          description={description}
           type={type}
           title={title}
           max={max}
@@ -75,6 +79,7 @@ export default function generateForm(schema, objName) {
         return (
           <EnumField
             name={strName}
+            description={description}
             title={title}
             enumList={enumList}
             enumNamesList={enumNamesList}
@@ -87,7 +92,6 @@ export default function generateForm(schema, objName) {
         let objProperties = {
           type: schema.properties[name].items.type
         }
-        console.log(objProperties)
         let maxItems = schema.properties[name].maxItems
         if (schema.properties[name].items?.type === 'object') {
           objProperties = replaceObjNames(
@@ -98,6 +102,7 @@ export default function generateForm(schema, objName) {
           return (
             <MultipleFormField
               name={strName}
+              description={description}
               title={title}
               key={strName}
               objects={objProperties}
@@ -108,6 +113,7 @@ export default function generateForm(schema, objName) {
           return (
             <MultipleArrayField
               name={strName}
+              description={description}
               title={title}
               key={strName}
               objects={objProperties}

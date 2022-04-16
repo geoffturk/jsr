@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 export default function MultipleFormField({
+  description,
   max,
   maxlength,
   min,
@@ -59,10 +60,18 @@ export default function MultipleFormField({
     return (
       <span key={i}>
         <label>
-          <span className="key">{title}:</span>
+          {inputList.length === 1 && (
+            <>
+              <span className="key">{title}:</span>
+              <br />
+              <span>{description}</span>
+              <br />
+            </>
+          )}
           {Object.keys(objects).map((obj, objIndex) => {
             let value = item[name + '-' + i + '-' + obj]
-            let labelName = obj.split('-').pop()
+            let title = objects[obj].title
+            let description = objects[obj].description
             let objType = objects[obj].type
             if (objType === 'array') {
               objType = objects[obj].items.type
@@ -79,7 +88,7 @@ export default function MultipleFormField({
 
               return (
                 <label key={objIndex}>
-                  {labelName}:
+                  {title}:
                   <select
                     name={name + '-' + i + '-' + obj}
                     id={name + '-' + i + '-' + obj}
@@ -96,12 +105,15 @@ export default function MultipleFormField({
                       </option>
                     ))}
                   </select>
+                  <br />
+                  <span>{description}</span>
+                  <br />
                 </label>
               )
             } else {
               return (
                 <label key={objIndex}>
-                  {labelName}:
+                  {title}:
                   <input
                     key={objIndex}
                     type={objType}
@@ -114,6 +126,9 @@ export default function MultipleFormField({
                     value={value}
                     onChange={e => handleChange(e, i)}
                   />
+                  <br />
+                  <span>{description}</span>
+                  <br />
                 </label>
               )
             }

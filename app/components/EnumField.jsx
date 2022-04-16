@@ -1,4 +1,5 @@
 export default function EnumField({
+  description,
   enumList,
   enumNamesList,
   multi,
@@ -18,6 +19,8 @@ export default function EnumField({
           ))}
         </select>
       </label>
+      <br />
+      <span>{description}</span>
       <br />
     </span>
   )

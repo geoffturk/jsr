@@ -50,7 +50,7 @@ hr,
 input,
 select,
 textarea {
-  margin-bottom: 1rem;
+  margin: 1rem 0.5rem;
 }
 
 label::before {
@@ -59,7 +59,7 @@ label::before {
 }
 
 button {
-  margin: 0.25rem;
+  margin: 1rem 0.25rem;
   padding: 0.25rem;
 }
 

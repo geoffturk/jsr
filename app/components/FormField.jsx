@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function FormField({
+  description,
   max,
   maxlength,
   min,
@@ -24,6 +25,8 @@ export default function FormField({
           pattern={pattern}
         />
       </label>
+      <br />
+      <span>{description}</span>
       <br />
     </span>
   )

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 export default function MultipleArrayField({
+  description,
   max,
   maxlength,
   min,
@@ -59,7 +60,14 @@ export default function MultipleArrayField({
     return (
       <span key={i}>
         <label>
-          <span className="key">{title}:</span>
+          {inputList.length === 1 && (
+            <>
+              <span className="key">{title}:</span>
+              <br />
+              <span>{description}</span>
+              <br />
+            </>
+          )}
           {Object.keys(objects).map((obj, objIndex) => {
             let value = item[name + '-' + i]
             let objType = objects[obj].type
