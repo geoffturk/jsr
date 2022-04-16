@@ -1,5 +1,3 @@
-// import React from 'react'
-
 import generateInstance from './generateInstance'
 
 describe('generateInstance tests', () => {
