@@ -93,6 +93,8 @@ export default function generateForm(schema, objName) {
           type: schema.properties[name].items.type
         }
         let maxItems = schema.properties[name].maxItems
+        let objTitle = schema.properties[name].items.title
+        let objDescription = schema.properties[name].items.description
         if (schema.properties[name].items?.type === 'object') {
           objProperties = replaceObjNames(
             schema.properties[name].items.properties,
@@ -106,6 +108,8 @@ export default function generateForm(schema, objName) {
               title={title}
               key={strName}
               objects={objProperties}
+              objTitle={objTitle}
+              objDescription={objDescription}
               maxItems={maxItems}
             />
           )

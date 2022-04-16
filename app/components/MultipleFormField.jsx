@@ -10,7 +10,9 @@ export default function MultipleFormField({
   pattern,
   title,
   maxItems,
-  objects
+  objects,
+  objTitle,
+  objDescription
 }) {
   // Initialize an empty object
   // Format is fieldName-id-objectName
@@ -60,14 +62,23 @@ export default function MultipleFormField({
     return (
       <span key={i}>
         <label>
-          {inputList.length === 1 && (
+          {i === 0 && (
             <>
               <span className="key">{title}:</span>
               <br />
               <span>{description}</span>
               <br />
+              <br />
             </>
           )}
+          {
+            <>
+              <span className="key">{objTitle}:</span>
+              <br />
+              <span>{objDescription}</span>
+              <br />
+            </>
+          }
           {Object.keys(objects).map((obj, objIndex) => {
             let value = item[name + '-' + i + '-' + obj]
             let title = objects[obj].title
