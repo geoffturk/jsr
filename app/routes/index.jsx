@@ -94,7 +94,9 @@ export default function Index() {
       ) : (
         'Select a schema...'
       )}
-      {instance ? <pre>{JSON.stringify(instance, null, 2)}</pre> : null}
+      {instance && !errors[0] ? (
+        <pre>{JSON.stringify(instance, null, 2)}</pre>
+      ) : null}
       {errors
         ? errors.map(error => (
             <p className="error" key={error}>
