@@ -40,3 +40,20 @@ export default function App() {
     </html>
   )
 }
+
+export function ErrorBoundary({ error }) {
+  console.error(error)
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body className="kaboom">
+        <h1>💥🤬</h1>
+        <Scripts />
+      </body>
+    </html>
+  )
+}

@@ -53,6 +53,11 @@ textarea {
   margin-bottom: 1rem;
 }
 
+label::before {
+  content: '\A';
+  white-space: pre;
+}
+
 button {
   margin: 0.25rem;
   padding: 0.25rem;
@@ -64,4 +69,12 @@ button {
 
 .error {
   color: red;
+}
+
+.kaboom {
+  font-size: 10rem;
+  display: grid;
+  height: 100vh;
+  margin: 0;
+  place-items: center center;
 }
