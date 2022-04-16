@@ -1,6 +1,6 @@
 // import React from 'react'
 
-import generateInstance from './generateInstance.server'
+import generateInstance from './generateInstance'
 
 describe('generateInstance tests', () => {
   it('Schema with object should return nested object data', () => {

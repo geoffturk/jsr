@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 import fetchPost from '~/utils/fetchPost'
 import generateForm from '~/utils/generateForm'
-import generateInstance from '~/utils/generateInstance.server'
+import generateInstance from '~/utils/generateInstance'
 import parseRef from '~/utils/parseRef.server'
 
 export async function action({ request }) {
