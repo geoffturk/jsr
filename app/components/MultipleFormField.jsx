@@ -1,25 +1,25 @@
 import React, { useState } from 'react'
 
 export default function MultipleFormField({
+  name,
   description,
   max,
   maxlength,
   min,
   minlength,
-  name,
   pattern,
   title,
-  maxItems,
   objects,
   objTitle,
-  objDescription
+  objDescription,
+  maxItems
 }) {
   // Initialize an empty object
   // Format is fieldName-id-objectName
   let fields = {}
   Object.keys(objects).map(obj => {
     let objName = name + '-0-' + obj
-    if (obj === 'TYPE') {
+    if (obj === 'ARRAY_TYPE') {
       objName = name + '-0'
     }
     fields[objName] = ''
@@ -38,7 +38,7 @@ export default function MultipleFormField({
     let addFields = {}
     Object.keys(objects).map(obj => {
       let objName = name + '-' + (index + 1) + '-' + obj
-      if (obj === 'TYPE') {
+      if (obj === 'ARRAY_TYPE') {
         objName = name + '-' + (index + 1)
       }
       addFields[objName] = ''
@@ -88,29 +88,28 @@ export default function MultipleFormField({
           {Object.keys(objects).map((obj, objIndex) => {
             let value = item[name + '-' + i + '-' + obj]
             let fieldName = name + '-' + i + '-' + obj
-            if (obj === 'TYPE') {
+            if (obj === 'ARRAY_TYPE') {
               value = item[name + '-' + i]
               fieldName = name + '-' + i
             }
-            let title = objects[obj].title
-            let description = objects[obj].description
-            let objType = objects[obj].type
-            if (objType === 'array') {
-              objType = objects[obj].items.type
-            }
-            if (objects[obj].enum || objects[obj].items?.enum) {
-              let multi = false
-              let enumList = objects[obj].enum
-              let enumNamesList = objects[obj].enumNames
-              if (objects[obj]?.items?.enum) {
-                enumList = objects[obj].items.enum
-                enumNamesList = objects[obj].items.enumNames
-                multi = true
-              }
 
+            let objProperties = objects[obj]
+            let title = objProperties.title
+            let description = objProperties.description
+            let objType = objProperties.type
+            let enumList = objProperties.enum
+            let enumNamesList = objProperties.enum?.enumNames
+            let multi = false
+            if (objType === 'array') {
+              objType = objProperties.items.type
+              enumList = objProperties.items.enum
+              enumNamesList = objProperties.items.enum?.enumNames
+              multi = true
+            }
+            if (enumList) {
               return (
                 <label key={objIndex}>
-                  {title}:
+                  {title ? title + ':' : ''}
                   <select name={fieldName} id={fieldName} multiple={multi}>
                     {multi ? null : (
                       <option value="" key="0">
@@ -124,32 +123,32 @@ export default function MultipleFormField({
                     ))}
                   </select>
                   <br />
-                  <span>{description}</span>
-                  <br />
-                </label>
-              )
-            } else {
-              return (
-                <label key={objIndex}>
-                  {title}:
-                  <input
-                    key={objIndex}
-                    type={objType}
-                    name={fieldName}
-                    max={max}
-                    maxLength={maxlength}
-                    min={min}
-                    minLength={minlength}
-                    pattern={pattern}
-                    value={value}
-                    onChange={e => handleChange(e, i)}
-                  />
-                  <br />
-                  <span>{description}</span>
+                  <span>{description ? description : ''}</span>
                   <br />
                 </label>
               )
             }
+
+            return (
+              <label key={objIndex}>
+                {title ? title + ':' : ''}
+                <input
+                  key={objIndex}
+                  type={objType}
+                  name={fieldName}
+                  max={max}
+                  maxLength={maxlength}
+                  min={min}
+                  minLength={minlength}
+                  pattern={pattern}
+                  value={value}
+                  onChange={e => handleChange(e, i)}
+                />
+                <br />
+                <span>{description ? description : ''}</span>
+                <br />
+              </label>
+            )
           })}
           {inputList.length !== 1 && (
             <input

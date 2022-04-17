@@ -94,13 +94,13 @@ export default function generateForm(schema, objName) {
         )
       }
 
-      // if there is an object inside the array, we need to replace the object names with their parent names.
       let objProperties = {
-        TYPE: schema.properties[name].items.type
+        ARRAY_TYPE: schema.properties[name].items.type
       }
       let maxItems = schema.properties[name].maxItems
       let objTitle = schema.properties[name].items.title
       let objDescription = schema.properties[name].items.description
+
       if (schema.properties[name].items?.type === 'object') {
         objProperties = replaceObjNames(
           schema.properties[name].items.properties,
@@ -148,14 +148,17 @@ function replaceObjNames(objProperties, newObjProperties, parentName) {
   }
 
   Object.keys(objProperties).map(name => {
+    let type = objProperties[name].type
     let newObjName = name
     if (parentName) newObjName = parentName + '-' + name
-    if (objProperties[name].type === 'object') {
+    if (type === 'object') {
       newObjProperties = replaceObjNames(
         objProperties[name].properties,
         newObjProperties,
         newObjName
       )
+    } else if (type === 'array') {
+      newObjProperties[newObjName + '-0'] = objProperties[name]
     } else {
       newObjProperties[newObjName] = objProperties[name]
     }
