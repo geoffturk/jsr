@@ -21,13 +21,12 @@ export default function generateForm(schema, objName) {
     let title = schema.properties[name].title
     let description = schema.properties[name].description
     let type = schema.properties[name].type
+    let strName = name
+    if (objName) strName = objName + '-' + name
 
     if (type === 'boolean' || type === 'null') return null
 
     if (type === 'string') {
-      let strName = name
-      if (objName) strName = objName + '-' + name
-
       if (schema.properties[name].enum) {
         let enumList = schema.properties[name].enum
         let enumNamesList = schema.properties[name].enumNames
@@ -62,28 +61,23 @@ export default function generateForm(schema, objName) {
     }
 
     if (type === 'number') {
-      let numName = name
-      if (objName) numName = objName + '-' + name
       let max = schema.properties[name].maximum
       let min = schema.properties[name].minimum
 
       return (
         <FormField
-          name={numName}
+          name={strName}
           description={description}
           type={type}
           title={title}
           max={max}
           min={min}
-          key={numName}
+          key={strName}
         />
       )
     }
 
     if (type === 'array') {
-      let strName = name
-      if (objName) strName = objName + '-' + name
-
       if (schema.properties[name].items.enum) {
         let enumList = schema.properties[name].items.enum
         let enumNamesList = schema.properties[name].items.enumNames
@@ -130,7 +124,7 @@ export default function generateForm(schema, objName) {
 
     if (type === 'object') {
       if (objName) {
-        objName = objName + '-' + name
+        objName += '-' + name
         return generateForm(schema.properties[name], objName)
       }
       return generateForm(schema.properties[name], name)
