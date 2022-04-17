@@ -6,7 +6,7 @@ import MultipleFormField from '../components/MultipleFormField'
 
 export default function generateForm(schema, objName) {
   if (!schema.properties) return null
-  return Object.keys(schema.properties).map(name => {
+  return Object.keys(schema.properties).map((name, index) => {
     if (name === 'linked_schemas') {
       return (
         <input
@@ -24,6 +24,13 @@ export default function generateForm(schema, objName) {
     let strName = name
     if (objName) strName = objName + '-' + name
 
+    let objectTitle
+    let objectDescription
+    if (index === 0) {
+      objectTitle = schema.title
+      objectDescription = schema.description
+    }
+
     if (type === 'boolean' || type === 'null') return null
 
     if (type === 'string') {
@@ -38,6 +45,8 @@ export default function generateForm(schema, objName) {
             enumList={enumList}
             enumNamesList={enumNamesList}
             key={strName}
+            objectTitle={objectTitle}
+            objectDescription={objectDescription}
           />
         )
       }
@@ -56,6 +65,8 @@ export default function generateForm(schema, objName) {
           minlength={minLength}
           pattern={pattern}
           key={strName}
+          objectTitle={objectTitle}
+          objectDescription={objectDescription}
         />
       )
     }
@@ -73,6 +84,8 @@ export default function generateForm(schema, objName) {
           max={max}
           min={min}
           key={strName}
+          objectTitle={objectTitle}
+          objectDescription={objectDescription}
         />
       )
     }

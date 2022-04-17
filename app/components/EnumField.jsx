@@ -1,13 +1,20 @@
+import React from 'react'
+
 export default function EnumField({
   description,
   enumList,
   enumNamesList,
   multi,
   name,
-  title
+  title,
+  objectTitle,
+  objectDescription
 }) {
   return (
     <span>
+      {objectTitle ? objectTitle : ''}
+      <br />
+      {objectDescription ? objectDescription : ''}
       <label>
         <span className="key">{title}:</span>
         <select name={name} id={name} multiple={multi}>

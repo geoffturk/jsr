@@ -9,10 +9,14 @@ export default function FormField({
   name,
   pattern,
   title,
-  type
+  type,
+  objectTitle,
+  objectDescription
 }) {
   return (
     <span>
+      {objectTitle ? objectTitle : ''}
+      {objectDescription ? objectDescription : ''}
       <label>
         <span className="key">{title}:</span>
         <input
