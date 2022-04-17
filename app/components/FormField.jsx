@@ -11,11 +11,19 @@ export default function FormField({
   title,
   type,
   objectTitle,
-  objectDescription
+  objectDescription,
+  step
 }) {
   return (
     <span>
-      {objectTitle ? `${objectTitle} -- ` : ''}
+      {objectTitle ? (
+        <>
+          <br />
+          {objectTitle} --
+        </>
+      ) : (
+        ''
+      )}
       {objectDescription ? objectDescription : ''}
       <label>
         <span className="key">{title}:</span>
@@ -28,6 +36,7 @@ export default function FormField({
           min={min}
           minLength={minlength}
           pattern={pattern}
+          step={step}
         />
       </label>
       <br />

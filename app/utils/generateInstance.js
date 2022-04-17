@@ -5,7 +5,7 @@ export default function generateInstance(schema, data) {
     .filter(name => data[name] !== '')
     .map(name => {
       if (schema.properties[name]?.type === 'number') {
-        profile[name] = parseInt(data[name])
+        profile[name] = parseFloat(data[name])
       } else if (
         schema.properties[name]?.type === 'array' &&
         schema.properties[name].items.type === 'string' &&
@@ -52,7 +52,7 @@ function parseArrayObject(fieldName, fieldData, schema, profile) {
         newArray.push(fieldData)
         currentProfile[arrayFields[i]] = newArray
       } else if (currentSchema.properties[arrayFields[i]]?.type === 'number') {
-        currentProfile[arrayFields[i]] = parseInt(fieldData)
+        currentProfile[arrayFields[i]] = parseFloat(fieldData)
       } else {
         currentProfile[arrayFields[i]] = fieldData
       }

@@ -12,7 +12,14 @@ export default function EnumField({
 }) {
   return (
     <span>
-      {objectTitle ? `${objectTitle} -- ` : ''}
+      {objectTitle ? (
+        <>
+          <br />
+          {objectTitle} --
+        </>
+      ) : (
+        ''
+      )}
       {objectDescription ? objectDescription : ''}
       <label>
         <span className="key">{title}:</span>

@@ -86,6 +86,7 @@ export default function generateForm(schema, objName) {
           key={strName}
           objectTitle={objectTitle}
           objectDescription={objectDescription}
+          step="any"
         />
       )
     }

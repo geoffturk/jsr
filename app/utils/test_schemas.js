@@ -50,9 +50,29 @@ export const test_schema_1 = {
 export const test_schema_2 = {
   ...schemaHeader,
   properties: {
-    linked_schemas: linked_schemas
+    linked_schemas: linked_schemas,
+    name: {
+      type: 'string'
+    },
+    urls: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string'
+          },
+          url: {
+            type: 'string',
+            pattern: '^https?://.*'
+          }
+        },
+        required: ['name', 'url']
+      }
+    }
   },
-  required: ['linked_schemas']
+  required: ['linked_schemas', 'name', 'urls'],
+  metadata: metadata
 }
 
 export const test_schema_3 = {
@@ -60,5 +80,15 @@ export const test_schema_3 = {
   properties: {
     linked_schemas: linked_schemas
   },
-  required: ['linked_schemas']
+  required: ['linked_schemas'],
+  metadata: metadata
+}
+
+export const test_schema_4 = {
+  ...schemaHeader,
+  properties: {
+    linked_schemas: linked_schemas
+  },
+  required: ['linked_schemas'],
+  metadata: metadata
 }
