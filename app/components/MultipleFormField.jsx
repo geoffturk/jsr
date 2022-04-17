@@ -110,7 +110,12 @@ export default function MultipleFormField({
               return (
                 <label key={objIndex}>
                   {title ? title + ':' : ''}
-                  <select name={fieldName} id={fieldName} multiple={multi}>
+                  <select
+                    aria-label={fieldName}
+                    name={fieldName}
+                    id={fieldName}
+                    multiple={multi}
+                  >
                     {multi ? null : (
                       <option value="" key="0">
                         Select
@@ -135,6 +140,7 @@ export default function MultipleFormField({
                 <input
                   key={objIndex}
                   type={objType}
+                  aria-label={fieldName}
                   name={fieldName}
                   max={max}
                   maxLength={maxlength}

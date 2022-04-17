@@ -14,8 +14,9 @@ This is a prototyping repo to try out JSON Schema in Remix.
 - [x] Pass profile to Murm Index for validation (since `eval` is not an option for CF workers) instead of `ajv`
 - [x] Build form display and formData parsing logic for defined JSON Schema functionality
 - [x] Add error boundary
+- [x] Label nesting objects
+- [ ] Add multiselect for schemas and merge
 - [ ] Add more tests
-- [ ] Add regex pattern matching to string inputs
 
 ## JSON Schema Functionality Scope
 

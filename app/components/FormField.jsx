@@ -15,12 +15,13 @@ export default function FormField({
 }) {
   return (
     <span>
-      {objectTitle ? objectTitle : ''}
+      {objectTitle ? `${objectTitle} -- ` : ''}
       {objectDescription ? objectDescription : ''}
       <label>
         <span className="key">{title}:</span>
         <input
           type={type}
+          aria-label={name}
           name={name}
           max={max}
           maxLength={maxlength}
