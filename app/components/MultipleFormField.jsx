@@ -19,6 +19,9 @@ export default function MultipleFormField({
   let fields = {}
   Object.keys(objects).map(obj => {
     let objName = name + '-0-' + obj
+    if (obj === 'TYPE') {
+      objName = name + '-0'
+    }
     fields[objName] = ''
   })
 
@@ -35,6 +38,9 @@ export default function MultipleFormField({
     let addFields = {}
     Object.keys(objects).map(obj => {
       let objName = name + '-' + (index + 1) + '-' + obj
+      if (obj === 'TYPE') {
+        objName = name + '-' + (index + 1)
+      }
       addFields[objName] = ''
     })
     setInputList([...inputList, addFields])
@@ -62,7 +68,7 @@ export default function MultipleFormField({
     return (
       <span key={i}>
         <label>
-          {i === 0 && (
+          {i === 0 && title !== undefined && (
             <>
               <span className="key">{title}:</span>
               <br />
@@ -71,16 +77,21 @@ export default function MultipleFormField({
               <br />
             </>
           )}
-          {
+          {objTitle !== undefined && (
             <>
               <span className="key">{objTitle}:</span>
               <br />
               <span>{objDescription}</span>
               <br />
             </>
-          }
+          )}
           {Object.keys(objects).map((obj, objIndex) => {
             let value = item[name + '-' + i + '-' + obj]
+            let fieldName = name + '-' + i + '-' + obj
+            if (obj === 'TYPE') {
+              value = item[name + '-' + i]
+              fieldName = name + '-' + i
+            }
             let title = objects[obj].title
             let description = objects[obj].description
             let objType = objects[obj].type
@@ -100,11 +111,7 @@ export default function MultipleFormField({
               return (
                 <label key={objIndex}>
                   {title}:
-                  <select
-                    name={name + '-' + i + '-' + obj}
-                    id={name + '-' + i + '-' + obj}
-                    multiple={multi}
-                  >
+                  <select name={fieldName} id={fieldName} multiple={multi}>
                     {multi ? null : (
                       <option value="" key="0">
                         Select
@@ -128,7 +135,7 @@ export default function MultipleFormField({
                   <input
                     key={objIndex}
                     type={objType}
-                    name={name + '-' + i + '-' + obj}
+                    name={fieldName}
                     max={max}
                     maxLength={maxlength}
                     min={min}

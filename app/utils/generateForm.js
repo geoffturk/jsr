@@ -3,7 +3,6 @@ import React from 'react'
 import EnumField from '../components/EnumField'
 import FormField from '../components/FormField'
 import MultipleFormField from '../components/MultipleFormField'
-import MultipleArrayField from '../components/MultipleArrayField'
 
 export default function generateForm(schema, objName) {
   if (!schema.properties) return null
@@ -18,12 +17,17 @@ export default function generateForm(schema, objName) {
         />
       )
     }
+    // Define data for root schema
     let title = schema.properties[name].title
     let description = schema.properties[name].description
     let type = schema.properties[name].type
+
+    if (type === 'boolean' || type === 'null') return null
+
     if (type === 'string') {
       let strName = name
       if (objName) strName = objName + '-' + name
+
       if (schema.properties[name].enum) {
         let enumList = schema.properties[name].enum
         let enumNamesList = schema.properties[name].enumNames
@@ -38,9 +42,11 @@ export default function generateForm(schema, objName) {
           />
         )
       }
+
       let maxLength = schema.properties[name].maxLength
       let minLength = schema.properties[name].minLength
       let pattern = schema.properties[name].pattern
+
       return (
         <FormField
           name={strName}
@@ -53,11 +59,14 @@ export default function generateForm(schema, objName) {
           key={strName}
         />
       )
-    } else if (type === 'number') {
-      let max = schema.properties[name].maximum
-      let min = schema.properties[name].minimum
+    }
+
+    if (type === 'number') {
       let numName = name
       if (objName) numName = objName + '-' + name
+      let max = schema.properties[name].maximum
+      let min = schema.properties[name].minimum
+
       return (
         <FormField
           name={numName}
@@ -69,7 +78,9 @@ export default function generateForm(schema, objName) {
           key={numName}
         />
       )
-    } else if (type === 'array') {
+    }
+
+    if (type === 'array') {
       let strName = name
       if (objName) strName = objName + '-' + name
 
@@ -87,56 +98,45 @@ export default function generateForm(schema, objName) {
             multi={true}
           />
         )
-      } else {
-        // if there is an object inside the array, we need to replace the object names with their parent names.
-        let objProperties = {
-          type: schema.properties[name].items.type
-        }
-        let maxItems = schema.properties[name].maxItems
-        let objTitle = schema.properties[name].items.title
-        let objDescription = schema.properties[name].items.description
-        if (schema.properties[name].items?.type === 'object') {
-          objProperties = replaceObjNames(
-            schema.properties[name].items.properties,
-            {}
-          )
-
-          return (
-            <MultipleFormField
-              name={strName}
-              description={description}
-              title={title}
-              key={strName}
-              objects={objProperties}
-              objTitle={objTitle}
-              objDescription={objDescription}
-              maxItems={maxItems}
-            />
-          )
-        } else {
-          return (
-            <MultipleArrayField
-              name={strName}
-              description={description}
-              title={title}
-              key={strName}
-              objects={objProperties}
-              maxItems={maxItems}
-            />
-          )
-        }
       }
-    } else if (type === 'boolean' || type === 'null') {
-      return null
-    } else if (type === 'object') {
+
+      // if there is an object inside the array, we need to replace the object names with their parent names.
+      let objProperties = {
+        TYPE: schema.properties[name].items.type
+      }
+      let maxItems = schema.properties[name].maxItems
+      let objTitle = schema.properties[name].items.title
+      let objDescription = schema.properties[name].items.description
+      if (schema.properties[name].items?.type === 'object') {
+        objProperties = replaceObjNames(
+          schema.properties[name].items.properties,
+          {}
+        )
+      }
+
+      return (
+        <MultipleFormField
+          name={strName}
+          description={description}
+          title={title}
+          key={strName}
+          objects={objProperties}
+          objTitle={objTitle}
+          objDescription={objDescription}
+          maxItems={maxItems}
+        />
+      )
+    }
+
+    if (type === 'object') {
       if (objName) {
         objName = objName + '-' + name
         return generateForm(schema.properties[name], objName)
       }
       return generateForm(schema.properties[name], name)
-    } else {
-      console.error('Undefined type in generateForm')
     }
+
+    console.error('Undefined type in generateForm')
   })
 }
 
