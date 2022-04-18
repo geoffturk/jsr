@@ -74,7 +74,7 @@ describe('generateInstance tests', () => {
     expect(received).toEqual(expected)
   })
 
-  it('Should handle multiple nested objects', () => {
+  it('Should handle single and multiple input enumerated input lists', () => {
     let formData = {
       linked_schemas: 'test_schema',
       single_choice: 'zero',
