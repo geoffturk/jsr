@@ -25,18 +25,15 @@ export const test_schema_1 = {
   properties: {
     linked_schemas: linked_schemas,
     name: {
-      title: 'Name',
       type: 'string'
     },
     geolocation: {
       type: 'object',
       properties: {
         lat: {
-          title: 'Latitude',
           type: 'number'
         },
         lon: {
-          title: 'Longitude',
           type: 'number'
         }
       },
@@ -78,17 +75,63 @@ export const test_schema_2 = {
 export const test_schema_3 = {
   ...schemaHeader,
   properties: {
-    linked_schemas: linked_schemas
+    linked_schemas: linked_schemas,
+    person: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string'
+        },
+        address: {
+          type: 'object',
+          properties: {
+            street: {
+              type: 'string'
+            },
+            location: {
+              type: 'object',
+              properties: {
+                locality: {
+                  type: 'string'
+                },
+                region: {
+                  type: 'string'
+                },
+                country: {
+                  type: 'string'
+                }
+              },
+              required: ['country', 'locality']
+            }
+          },
+          required: ['location']
+        }
+      },
+      required: ['name']
+    }
   },
-  required: ['linked_schemas'],
+  required: ['linked_schemas', 'person'],
   metadata: metadata
 }
 
 export const test_schema_4 = {
   ...schemaHeader,
   properties: {
-    linked_schemas: linked_schemas
+    linked_schemas: linked_schemas,
+    single_choice: {
+      type: 'string',
+      enum: ['zero', 'one', 'two', 'three', 'four'],
+      enumNames: ['None', 'First', 'Second', 'Third', 'Fourth']
+    },
+    multiple_choice: {
+      type: 'array',
+      items: {
+        type: 'string',
+        enum: ['one', 'two', 'three', 'four', 'five'],
+        enumNames: ['First', 'Second', 'Third', 'Fourth', 'Fifth']
+      }
+    }
   },
-  required: ['linked_schemas'],
+  required: ['linked_schemas', 'single_choice', 'multiple_choice'],
   metadata: metadata
 }

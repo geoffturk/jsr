@@ -19,12 +19,12 @@ export default function FormField({
       {objectTitle ? (
         <>
           <br />
-          {objectTitle} --
+          {objectTitle}
         </>
       ) : (
         ''
       )}
-      {objectDescription ? objectDescription : ''}
+      {objectDescription ? ` -- ${objectDescription}` : ''}
       <label>
         <span className="key">{title}:</span>
         <input

@@ -51,8 +51,14 @@ export function ErrorBoundary({ error }) {
         <Meta />
         <Links />
       </head>
-      <body className="kaboom">
-        <h1>💥😱</h1>
+      <body>
+        <div className="error-boundary">
+          <p>
+            <span className="kaboom">💥🤬</span>
+            <br />
+            {JSON.stringify(error.message)}
+          </p>
+        </div>
         <Scripts />
       </body>
     </html>

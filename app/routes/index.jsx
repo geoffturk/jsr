@@ -106,11 +106,3 @@ export default function Index() {
     </>
   )
 }
-
-export function ErrorBoundary() {
-  return (
-    <div className="kaboom">
-      <h1>💥🤬</h1>
-    </div>
-  )
-}

@@ -71,10 +71,13 @@ button {
   color: red;
 }
 
-.kaboom {
-  font-size: 10rem;
+.error-boundary {
   display: grid;
   height: 100vh;
   margin: 0;
   place-items: center center;
+}
+
+.kaboom {
+  font-size: 20rem;
 }
