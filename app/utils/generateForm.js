@@ -13,7 +13,7 @@ export default function generateForm(schema, objName) {
           type="hidden"
           name="linked_schemas"
           key="linked_schemas"
-          value={schema.metadata.schema.name}
+          value={schema.metadata.schema}
         />
       )
     }

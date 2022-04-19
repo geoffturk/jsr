@@ -16,8 +16,7 @@ export async function action({ request }) {
   }
   let { _action, _url, ...data } = rawData
   if (_action === 'submit') {
-    let schemaUrl = `https://test-cdn.murmurations.network/schemas/${data.linked_schemas}.json`
-    let schema = await parseRef(schemaUrl)
+    let schema = await parseRef(data.linked_schemas)
     let profile = generateInstance(schema, data)
     let validation = await fetchPost(
       'https://test-index.murmurations.network/v2/validate',
@@ -36,8 +35,7 @@ export async function action({ request }) {
     }
   }
   if (_action === 'select') {
-    let schemaUrl = `https://test-cdn.murmurations.network/schemas/${data.schema}.json`
-    return await parseRef(schemaUrl)
+    return await parseRef(data.schema)
   }
 }
 
@@ -71,7 +69,7 @@ export default function Index() {
   return (
     <>
       <Form method="post">
-        <select id="schema" name="schema">
+        <select id="schema" name="schema" multiple={true}>
           {schemas.data.map(schema => (
             <option value={schema.name} key={schema.name}>
               {schema.name}
