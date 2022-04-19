@@ -98,12 +98,12 @@ export default function MultipleFormField({
             let description = objProperties.description
             let objType = objProperties.type
             let enumList = objProperties.enum
-            let enumNamesList = objProperties.enum?.enumNames
+            let enumNamesList = objProperties?.enumNames
             let multi = false
             if (objType === 'array') {
               objType = objProperties.items.type
               enumList = objProperties.items.enum
-              enumNamesList = objProperties.items.enum?.enumNames
+              enumNamesList = objProperties.items?.enumNames
               multi = true
             }
             if (enumList) {
