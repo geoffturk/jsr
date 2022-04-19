@@ -69,7 +69,7 @@ export default function Index() {
   return (
     <>
       <Form method="post">
-        <select id="schema" name="schema" multiple={true}>
+        <select id="schema" name="schema" multiple={true} required={true}>
           {schemas.data.map(schema => (
             <option value={schema.name} key={schema.name}>
               {schema.name}
