@@ -43,7 +43,13 @@ function parseArrayObject(fieldName, fieldData, schema, profile) {
     // The last item comes with value
     if (i === arrayFields.length - 1) {
       if (currentSchema?.type === 'array') {
-        currentProfile.push(fieldData)
+        if (Array.isArray(fieldData)) {
+          fieldData.map(data => {
+            currentProfile.push(data)
+          })
+        } else {
+          currentProfile.push(fieldData)
+        }
       } else if (
         currentSchema.properties[arrayFields[i]]?.type === 'array' &&
         currentSchema.properties[arrayFields[i]].items.enum === undefined
