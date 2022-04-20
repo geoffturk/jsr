@@ -12,50 +12,22 @@ This is a prototyping repo to try out JSON Schema in Remix.
 - [x] Pull in schemas from Murm Library
   - [x] Add ref parser
 - [x] Pass profile to Murm Index for validation (since `eval` is not an option for CF workers) instead of `ajv`
-- [ ] Build form display and formData parsing logic for defined JSON Schema functionality
-- [ ] Add error boundary
+- [x] Build form display and formData parsing logic for defined JSON Schema functionality
+- [x] Add error boundary
+- [x] Label nesting objects
+- [ ] Add multiselect for schemas and merge
+- [ ] Add more tests
 
-### JSON Schema Functionality Scope
+## JSON Schema Functionality Scope
 
-```
-properties
-  title
-  description
-  type
-required
+### _Form inputs generation_ - [`generateForm.js`](app/utils/generateForm.js)
 
-Types
------
-✔string
-  ✔minLength
-  ✔maxLength
-  ✔pattern
-  ✔enum
-    ✔enumNames
-✔number
-  ✔minimum
-  ✔maximum
-✔array
-  ✔items
-    ✔string (multiple choice)
-    ✔enum
-      ✔enumNames
-      contexts
-    uniqueItems (boolean)
+Given a JSON schema, generate form inputs for the properties defined in the schema.
 
-object
-boolean
-null
-```
+### _JSON instance generation_ - [`generateInstance.js`](app/utils/generateInstance.js)
 
-#### Form inputs generation - [`generateForm.js`](app/utils/generateForm.js)
+Given a JSON schema and form data, generate a JSON instance representing the data collected in the form.
 
-_Given a JSON schema, generate form inputs for the properties defined in the schema._
+### _JSON instance validation_ - `POST https://test-index.murmurations.network/v2/validate`
 
-#### JSON instance generation - [`generateInstance.server.js`](app/utils/generateInstance.server.js)
-
-_Given a JSON schema and form data, generate a JSON instance representing the data collected in the form._
-
-#### JSON instance validation - `POST https://test-index.murmurations.network/v2/validate`
-
-_Given at least one JSON schema and a JSON instance, validated the JSON instance to the schema(s)._
+Given at least one JSON schema and a JSON instance, validated the JSON instance to the schema(s).

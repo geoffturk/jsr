@@ -14,7 +14,8 @@
     "format": "npm run prettier -- --write",
     "validate": "npm run lint && npm run format && npm run build",
     "prepare": "husky install",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "eslintConfig": {
     "extends": [
@@ -31,21 +32,23 @@
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
-    "@remix-run/react": "^1.2.1",
-    "@remix-run/serve": "^1.2.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "remix": "^1.2.1"
+    "@remix-run/react": "^1.4.0",
+    "@remix-run/serve": "^1.4.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "remix": "^1.4.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@remix-run/dev": "^1.2.1",
+    "@remix-run/dev": "^1.4.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.0.1",
     "eslint-config-prettier": "^8.5.0",
-    "husky": "^7.0.0",
+    "husky": "^7.0.4",
     "jest": "^27.5.1",
-    "lint-staged": "^12.3.7",
+    "lint-staged": "^12.3.8",
     "prettier": "^2.6.2"
   },
   "engines": {

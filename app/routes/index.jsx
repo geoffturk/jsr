@@ -1,8 +1,9 @@
 import { Form, json, useActionData, useLoaderData } from 'remix'
+import { useEffect, useState } from 'react'
 
 import fetchPost from '~/utils/fetchPost'
 import generateForm from '~/utils/generateForm'
-import generateInstance from '~/utils/generateInstance.server'
+import generateInstance from '~/utils/generateInstance'
 import parseRef from '~/utils/parseRef.server'
 
 export async function action({ request }) {
@@ -15,8 +16,7 @@ export async function action({ request }) {
   }
   let { _action, _url, ...data } = rawData
   if (_action === 'submit') {
-    let schemaUrl = `https://test-cdn.murmurations.network/schemas/${data.linked_schemas}.json`
-    let schema = await parseRef(schemaUrl)
+    let schema = await parseRef(data.linked_schemas)
     let profile = generateInstance(schema, data)
     let validation = await fetchPost(
       'https://test-index.murmurations.network/v2/validate',
@@ -27,7 +27,7 @@ export async function action({ request }) {
       return json(body, { status: 400 })
     } else if (validation.status === 200) {
       if (body.status === 400) {
-        return json(body.failure_reasons, { status: 400 })
+        return json(body, { status: 400 })
       }
       return json(profile, { status: 200 })
     } else {
@@ -35,8 +35,7 @@ export async function action({ request }) {
     }
   }
   if (_action === 'select') {
-    let schemaUrl = `https://test-cdn.murmurations.network/schemas/${data.schema}.json`
-    return await parseRef(schemaUrl)
+    return await parseRef(data.schema)
   }
 }
 
@@ -50,15 +49,27 @@ export async function loader() {
 export default function Index() {
   let schemas = useLoaderData()
   let data = useActionData()
-  let schema
-  if (data?.$schema) {
-    schema = data
-  }
+  let [schema, setSchema] = useState('')
+  let [instance, setInstance] = useState('')
+  let [errors, setErrors] = useState([])
+  useEffect(() => {
+    if (data?.$schema) {
+      setSchema(data)
+      setInstance('')
+      setErrors([])
+    }
+    if (data?.linked_schemas) {
+      setInstance(data)
+      setErrors([])
+    }
+    if (data?.failure_reasons) {
+      setErrors(data.failure_reasons)
+    }
+  }, [data])
   return (
-    <div>
-      <h1>JSON Schema - Remix</h1>
+    <>
       <Form method="post">
-        <select id="schema" name="schema">
+        <select id="schema" name="schema" multiple={true} required={true}>
           {schemas.data.map(schema => (
             <option value={schema.name} key={schema.name}>
               {schema.name}
@@ -80,6 +91,16 @@ export default function Index() {
       ) : (
         'Select a schema...'
       )}
-    </div>
+      {instance && !errors[0] ? (
+        <pre>{JSON.stringify(instance, null, 2)}</pre>
+      ) : null}
+      {errors
+        ? errors.map(error => (
+            <p className="error" key={error}>
+              {error}
+            </p>
+          ))
+        : null}
+    </>
   )
 }

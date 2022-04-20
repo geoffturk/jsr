@@ -1,54 +1,47 @@
-import React from 'react'
+import { screen, render } from '@testing-library/react'
+import '@testing-library/jest-dom'
 
-import FormField from '../components/FormField'
 import generateForm from './generateForm'
+import { schemaHeader, test_schema_1, test_schema_2 } from './test_schemas'
 
 describe('generateForm tests', () => {
   it('Schema with no properties should return null', () => {
-    let test_schema = {
-      $schema: 'https://json-schema.org/draft-07/schema#',
-      $id: 'https://ic3.dev/test_schema.json',
-      title: 'Test Schema',
-      description: 'Just for testing',
-      type: 'object'
-    }
+    expect(generateForm(schemaHeader)).toBe(null)
+  })
+})
 
-    expect(generateForm(test_schema)).toBe(null)
+describe('render form tests', () => {
+  it('Should render string and number input fields', () => {
+    render(generateForm(test_schema_1))
+
+    expect(
+      screen.getByRole('textbox', { name: /name/i, type: /string/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('spinbutton', {
+        name: /geolocation-lat/i,
+        type: /number/i
+      })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('spinbutton', {
+        name: /geolocation-lon/i,
+        type: /number/i
+      })
+    ).toBeInTheDocument()
   })
 
-  it('Schema with properties should return expected form fields', () => {
-    let test_schema = {
-      $schema: 'https://json-schema.org/draft-07/schema#',
-      $id: 'https://ic3.dev/test_schema.json',
-      title: 'Test Schema',
-      description: 'Just for testing',
-      type: 'object',
-      properties: {
-        name: {
-          title: 'Your Name',
-          type: 'string',
-          minLength: 2,
-          maxLength: 5
-        },
-        email: {
-          title: 'Email',
-          type: 'string'
-        }
-      },
-      required: ['name', 'email']
-    }
+  it('Should render input fields from object and Add button for array', () => {
+    render(generateForm(test_schema_2))
 
-    let received = generateForm(test_schema)
-    let expected = [
-      <FormField
-        maxlength={5}
-        minlength={2}
-        name="name"
-        title="Your Name"
-        type="string"
-      />,
-      <FormField name="email" title="Email" type="string" />
-    ]
-    expect(received.toString()).toEqual(expected.toString())
+    expect(
+      screen.getByRole('textbox', { name: /urls-0-name/i, type: /string/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('textbox', { name: /urls-0-url/i, type: /string/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /add/i, type: /button/i })
+    ).toBeInTheDocument()
   })
 })
